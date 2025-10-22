@@ -22,10 +22,10 @@ void MainMenuScreen::Update() {
     if (IsKeyPressed(KEY_ENTER)) {
         switch (selectedOption) {
             case 0:  // Play
-                RequestScreenChange(std::make_unique<GameplayScreen>(manager));
+                RequestScreenChange<GameplayScreen>();
                 break;
             case 1:  // Options
-                RequestScreenChange(std::make_unique<OptionsScreen>(manager));
+                RequestScreenChange<OptionsScreen>();
                 break;
             case 2:  // Exit
                 RequestExit();

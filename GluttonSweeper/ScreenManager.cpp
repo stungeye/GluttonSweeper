@@ -3,10 +3,6 @@
 ScreenManager::ScreenManager() : shouldExit(false) {
 }
 
-void ScreenManager::SetInitialScreen(std::unique_ptr<Screen> initialScreen) {
-    screenStack.push_back(std::move(initialScreen));
-}
-
 void ScreenManager::Update() {
     if (screenStack.empty()) return;
 

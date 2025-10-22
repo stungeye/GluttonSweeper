@@ -9,7 +9,7 @@ GameOverScreen::GameOverScreen(ScreenManager& mgr, int finalScore)
 
 void GameOverScreen::Update() {
     if (IsKeyPressed(KEY_ENTER)) {
-        RequestScreenChange(std::make_unique<MainMenuScreen>(manager));
+        RequestScreenChange<MainMenuScreen>();
     }
 
     if (IsKeyPressed(KEY_ESCAPE)) {

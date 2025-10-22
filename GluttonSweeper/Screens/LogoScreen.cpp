@@ -3,8 +3,8 @@
 #include "../ScreenManager.h"
 #include <raylib.h>
 
-LogoScreen::LogoScreen(ScreenManager& mgr)
-    : FullScreen(mgr), displayTime(LOGO_DURATION), elapsedTime(0.0f) {
+LogoScreen::LogoScreen(ScreenManager& mgr, float duration)
+    : FullScreen(mgr), displayTime(duration), elapsedTime(0.0f) {
 }
 
 void LogoScreen::Update() {
@@ -17,7 +17,7 @@ void LogoScreen::Update() {
 
     // Transition when time is up
     if (elapsedTime >= displayTime) {
-        RequestScreenChange(std::make_unique<MainMenuScreen>(manager));
+        RequestScreenChange<MainMenuScreen>();
     }
 }
 

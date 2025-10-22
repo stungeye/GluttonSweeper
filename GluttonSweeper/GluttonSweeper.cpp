@@ -1,7 +1,6 @@
 #include "ScreenManager.h"
 #include "Screens/LogoScreen.h"
 #include <raylib.h>
-#include <memory>
 
 int main()
 {
@@ -14,7 +13,7 @@ int main()
 
     // Create screen manager and set initial screen
     ScreenManager screenManager;
-    screenManager.SetInitialScreen(std::make_unique<LogoScreen>(screenManager));
+    screenManager.SetInitialScreen<LogoScreen>(3.0f);
 
     // Main loop
     while (!WindowShouldClose() && !screenManager.ShouldExit()) {

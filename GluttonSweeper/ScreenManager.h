@@ -3,6 +3,7 @@
 #include "Screen.h"
 #include <memory>
 #include <vector>
+#include <type_traits>
 
 class ScreenManager {
 private:
@@ -13,7 +14,12 @@ public:
     ScreenManager();
     ~ScreenManager() = default;
 
-    void SetInitialScreen(std::unique_ptr<Screen> initialScreen);
+    // Template method - hides unique_ptr, automatically injects 'this'
+    template<typename T, typename... Args>
+    void SetInitialScreen(Args&&... args) {
+        static_assert(std::is_base_of_v<Screen, T>, "T must derive from Screen");
+        screenStack.push_back(std::make_unique<T>(*this, std::forward<Args>(args)...));
+    }
 
     void Update();
     void Draw() const;

@@ -3,7 +3,7 @@
 #include <raylib.h>
 
 OptionsScreen::OptionsScreen(ScreenManager& mgr)
-    : Overlay(mgr), selectedOption(0) {
+    : Overlay(mgr) {
 }
 
 void OptionsScreen::Update() {

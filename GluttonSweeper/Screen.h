@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <type_traits>
 
 class ScreenManager;
 
@@ -9,13 +10,20 @@ class Screen {
 private:
     std::unique_ptr<Screen> nextScreen;
     bool requestedExit;
+    ScreenManager& manager;
 
 protected:
-    ScreenManager& manager;
     bool requestedClose;  // Protected so Overlay can set it
 
-    void RequestScreenChange(std::unique_ptr<Screen> screen) {
-        nextScreen = std::move(screen);
+    // Template method - automatically injects manager and hides unique_ptr from derived classes
+	// typename T                   = type of the screen to create
+    // typename... Args             = parameter pack (accepts 0 or more types)
+    // Args&&...                    = forwarding reference. See: https://jaredmil.medium.com/c-move-semantics-pt-4-forwarding-references-std-forward-e32e95c72a7e 
+	// std::forward<Args>(args)...  = unpack and forward each argument
+    template<typename T, typename... Args>
+    void RequestScreenChange(Args&&... args) {
+        static_assert(std::is_base_of_v<Screen, T>, "T must derive from Screen");
+        nextScreen = std::make_unique<T>(manager, std::forward<Args>(args)...);
     }
 
     void RequestExit() {

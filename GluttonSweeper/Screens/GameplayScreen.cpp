@@ -12,13 +12,13 @@ GameplayScreen::GameplayScreen(ScreenManager& mgr)
 void GameplayScreen::Update() {
     // Toggle pause
     if (IsKeyPressed(KEY_P)) {
-        RequestScreenChange(std::make_unique<PauseOverlay>(manager));
+        RequestScreenChange<PauseOverlay>();
         return;
     }
 
     // Return to menu
     if (IsKeyPressed(KEY_ESCAPE)) {
-        RequestScreenChange(std::make_unique<MainMenuScreen>(manager));
+        RequestScreenChange<MainMenuScreen>();
         return;
     }
 
@@ -38,7 +38,7 @@ void GameplayScreen::Update() {
         // Check if time is up
         if (timeRemaining <= 0.0f) {
             timeRemaining = 0.0f;
-            RequestScreenChange(std::make_unique<GameOverScreen>(manager, score));
+            RequestScreenChange<GameOverScreen>(score);
         }
     }
 }

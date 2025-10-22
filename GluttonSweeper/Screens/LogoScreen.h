@@ -6,10 +6,9 @@ class LogoScreen : public FullScreen {
 private:
     float displayTime;
     float elapsedTime;
-    static constexpr float LOGO_DURATION = 3.0f;
 
 public:
-    LogoScreen(ScreenManager& mgr);
+    LogoScreen(ScreenManager& mgr, float duration = 2.0f);
 
     void Update() override;
     void Draw() const override;
