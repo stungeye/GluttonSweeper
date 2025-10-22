@@ -1,8 +1,0 @@
-C:/Users/kgeske/source/repos/GluttonSweeper/vcpkg_installed/x64-windows/vcpkg/pkgs/raylib_x64-windows/debug/lib/raylib.lib
-C:/Users/kgeske/source/repos/GluttonSweeper/vcpkg_installed/x64-windows/vcpkg/pkgs/raylib_x64-windows/debug/bin/raylib.dll
-C:/Users/kgeske/source/repos/GluttonSweeper/vcpkg_installed/x64-windows/vcpkg/pkgs/raylib_x64-windows/debug/include/raylib.h
-C:/Users/kgeske/source/repos/GluttonSweeper/vcpkg_installed/x64-windows/vcpkg/pkgs/raylib_x64-windows/debug/include/rlgl.h
-C:/Users/kgeske/source/repos/GluttonSweeper/vcpkg_installed/x64-windows/vcpkg/pkgs/raylib_x64-windows/debug/include/raymath.h
-C:/Users/kgeske/source/repos/GluttonSweeper/vcpkg_installed/x64-windows/vcpkg/pkgs/raylib_x64-windows/debug/lib/pkgconfig/raylib.pc
-C:/Users/kgeske/source/repos/GluttonSweeper/vcpkg_installed/x64-windows/vcpkg/pkgs/raylib_x64-windows/debug/lib/cmake/raylib/raylib-config-version.cmake
-C:/Users/kgeske/source/repos/GluttonSweeper/vcpkg_installed/x64-windows/vcpkg/pkgs/raylib_x64-windows/debug/lib/cmake/raylib/raylib-config.cmake

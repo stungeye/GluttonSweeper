@@ -1,6 +1,0 @@
-Package: qoi
-Version: 2023-08-10
-Architecture: x64-windows
-Multi-Arch: same
-Abi: 6ba98837ec2635438fb8208b86086b784fe098256975eef230fe121caf653761
-Description: The Quite OK Image Format for fast, lossless image compression
