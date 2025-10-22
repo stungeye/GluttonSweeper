@@ -1,0 +1,60 @@
+#include "MainMenuScreen.h"
+#include "OptionsScreen.h"
+#include "GameplayScreen.h"
+#include "../ScreenManager.h"
+#include <raylib.h>
+#include <memory>
+
+MainMenuScreen::MainMenuScreen(ScreenManager& mgr)
+    : FullScreen(mgr), selectedOption(0) {
+}
+
+void MainMenuScreen::Update() {
+    // Navigate menu
+    if (IsKeyPressed(KEY_UP)) {
+        selectedOption = (selectedOption - 1 + 3) % 3;
+    }
+    if (IsKeyPressed(KEY_DOWN)) {
+        selectedOption = (selectedOption + 1) % 3;
+    }
+
+    // Select option
+    if (IsKeyPressed(KEY_ENTER)) {
+        switch (selectedOption) {
+            case 0:  // Play
+                RequestScreenChange(std::make_unique<GameplayScreen>(manager));
+                break;
+            case 1:  // Options
+                RequestScreenChange(std::make_unique<OptionsScreen>(manager));
+                break;
+            case 2:  // Exit
+                RequestExit();
+                break;
+        }
+    }
+}
+
+void MainMenuScreen::Draw() const {
+    // Draw background
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), DARKGRAY);
+
+    // Draw title
+    int titleWidth = MeasureText("GLUTTON SWEEPER", 60);
+    DrawText("GLUTTON SWEEPER",
+             GetScreenWidth() / 2 - titleWidth / 2,
+             50,
+             60,
+             YELLOW);
+
+    // Draw menu options
+    const char* options[] = {"Play", "Options", "Exit"};
+    int startY = 200;
+    int spacing = 80;
+
+    for (int i = 0; i < 3; i++) {
+        Color textColor = (i == selectedOption) ? YELLOW : WHITE;
+        const char* prefix = (i == selectedOption) ? "> " : "  ";
+        DrawText(prefix, 300, startY + i * spacing, 40, textColor);
+        DrawText(options[i], 350, startY + i * spacing, 40, textColor);
+    }
+}
