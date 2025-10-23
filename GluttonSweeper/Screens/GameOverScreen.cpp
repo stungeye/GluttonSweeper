@@ -7,6 +7,7 @@
 
 GameOverScreen::GameOverScreen(ScreenManager& manager)
     : FullScreen{ manager } {
+	zombieTexture = GetContext().textureManager.getOrLoad("Assets/zombie_0.png");
 }
 
 void GameOverScreen::Update() {
@@ -32,6 +33,10 @@ void GameOverScreen::Draw() const {
              100,
              80,
              YELLOW);
+
+    DrawTexture(zombieTexture->raw(),
+                GetScreenWidth() / 2 - gameOverWidth / 2 - zombieTexture->width() - 20,
+                40, WHITE);
 
     const char* scoreText{ TextFormat("Final Score: %d", game.GetScore()) };
     int scoreWidth{ MeasureText(scoreText, 40) };

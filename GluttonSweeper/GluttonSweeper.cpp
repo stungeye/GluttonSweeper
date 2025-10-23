@@ -1,6 +1,7 @@
 #include "ScreenManager.hpp"
 #include "GameManager.hpp"
 #include "GameContext.hpp"
+#include "TextureManager.hpp"
 #include "Screens/LogoScreen.hpp"
 #include <raylib.h>
 
@@ -13,27 +14,30 @@ int main()
     SetTargetFPS(60);
 	SetExitKey(KEY_NULL);  // Disable default ESC key exit
 
-    // Create game systems
-    GameManager gameManager;
-    
-    // Create context holding all game systems
-    GameContext context{ gameManager };
-    
-    // Create screen manager with context
-    ScreenManager screenManager{ context };
-    screenManager.SetInitialScreen<LogoScreen>("Gluttonous Key Smasher", 3.0f);
+	{ // Extra block scope so that TextureManager is destroyed before CloseWindow()
+		// Create game systems
+		GameManager gameManager;
+		TextureManager textureManager;
 
-    // Main loop
-    while (!WindowShouldClose() && !screenManager.ShouldExit()) {
-        // Update
-        screenManager.Update();
+		// Create context holding all game systems
+		GameContext context{ gameManager, textureManager };
 
-        // Draw
-        BeginDrawing();
-        ClearBackground(BLACK);
-        screenManager.Draw();
-        EndDrawing();
-    }
+		// Create screen manager with context
+		ScreenManager screenManager{ context };
+		screenManager.SetInitialScreen<LogoScreen>("Gluttonous Key Smasher", 3.0f);
+
+		// Main loop
+		while (!WindowShouldClose() && !screenManager.ShouldExit()) {
+			// Update
+			screenManager.Update();
+
+			// Draw
+			BeginDrawing();
+			ClearBackground(BLACK);
+			screenManager.Draw();
+			EndDrawing();
+		}
+	}
 
     // Cleanup
     CloseWindow();

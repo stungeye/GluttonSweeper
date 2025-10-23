@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="GameContext.hpp" />
     <ClInclude Include="GameManager.hpp" />
+    <ClInclude Include="ManagedTexture.hpp" />
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
     <ClInclude Include="Screens\GameOverScreen.hpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Screens\MainMenuScreen.hpp" />
     <ClInclude Include="Screens\OptionsOverlay.hpp" />
     <ClInclude Include="Screens\PauseOverlay.hpp" />
+    <ClInclude Include="TextureManager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

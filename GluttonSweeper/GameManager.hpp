@@ -8,7 +8,9 @@ private:
     int score;
     float timeRemaining;
     bool gameStarted;
+    float timeSinceLastAction;
     static constexpr float GAME_DURATION{ 10.0f };
+    static constexpr float IDLE_TIMEOUT{ 0.4f };
 
 public:
     GameManager();
@@ -18,6 +20,7 @@ public:
     void AddScore(int points);
     void UpdateTimer(float deltaTime);
     bool IsTimeUp() const;
+    bool IsRunning() const;  // Check if zombie should be running
     void Reset();
 
     // Getters for UI/rendering

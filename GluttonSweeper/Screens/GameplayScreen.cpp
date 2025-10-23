@@ -9,6 +9,11 @@
 
 GameplayScreen::GameplayScreen(ScreenManager& manager)
     : FullScreen{ manager } {
+	// Load zombie textures from Assets/zombie_#.png into array:
+	for (std::size_t i{ 0 }; i < zombieTextures.size(); ++i) {
+		zombieTextures[i] = GetContext().textureManager.getOrLoad(
+			"Assets/zombie_" + std::to_string(i) + ".png");
+	}
 }
 
 // Update is acting as the Controller and the gameManager is the Model.
@@ -36,7 +41,19 @@ void GameplayScreen::Update() {
 	} 
 	
 	if (IsKeyPressed(KEY_SPACE)) {
-		game.AddScore(1);
+		game.AddScore(1);  // This resets idle timer internally
+		
+		// Cycle through running animation frames 1, 2, 3 
+		if (zombieIndex < 1 || zombieIndex >= 3) {
+			zombieIndex = 1;  // Start running animation
+		} else {
+			zombieIndex++;    // Continue to next frame
+		}
+	} 
+	
+	// Return to idle animation (frame 0) if not running
+	if (!game.IsRunning()) {
+		zombieIndex = 0;
 	}
 
 	game.UpdateTimer(GetFrameTime());
@@ -44,6 +61,7 @@ void GameplayScreen::Update() {
 	if (game.IsTimeUp()) {
 		RequestScreenChange<GameOverScreen>();
 	}
+
 }
 
 // Draw is acting as the View for the gameManager.
@@ -66,4 +84,9 @@ void GameplayScreen::Draw() const {
     DrawText(TextFormat("Time: %.1f", game.GetTimeRemaining()), 
              GetScreenWidth() / 2 - 200, 450, 100, 
              game.GetTimeRemaining() < 3.0f ? RED : WHITE);
+
+	DrawTexture(
+		zombieTextures[zombieIndex]->raw(),
+		0 + game.GetScore() * ZOMBIE_STEP_X,
+		GetScreenHeight() - 128, WHITE);
 }
