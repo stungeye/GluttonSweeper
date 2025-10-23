@@ -139,16 +139,16 @@
     <ClCompile Include="Screens\PauseOverlay.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameContext.h" />
-    <ClInclude Include="GameManager.h" />
-    <ClInclude Include="Screen.h" />
-    <ClInclude Include="ScreenManager.h" />
-    <ClInclude Include="Screens\GameOverScreen.h" />
-    <ClInclude Include="Screens\GameplayScreen.h" />
-    <ClInclude Include="Screens\LogoScreen.h" />
-    <ClInclude Include="Screens\MainMenuScreen.h" />
-    <ClInclude Include="Screens\OptionsScreen.h" />
-    <ClInclude Include="Screens\PauseOverlay.h" />
+    <ClInclude Include="GameContext.hpp" />
+    <ClInclude Include="GameManager.hpp" />
+    <ClInclude Include="Screen.hpp" />
+    <ClInclude Include="ScreenManager.hpp" />
+    <ClInclude Include="Screens\GameOverScreen.hpp" />
+    <ClInclude Include="Screens\GameplayScreen.hpp" />
+    <ClInclude Include="Screens\LogoScreen.hpp" />
+    <ClInclude Include="Screens\MainMenuScreen.hpp" />
+    <ClInclude Include="Screens\OptionsScreen.hpp" />
+    <ClInclude Include="Screens\PauseOverlay.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

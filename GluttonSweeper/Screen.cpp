@@ -1,6 +1,6 @@
-#include "Screen.h"
-#include "ScreenManager.h"
-#include "GameContext.h"
+#include "Screen.hpp"
+#include "ScreenManager.hpp"
+#include "GameContext.hpp"
 
 /* 
    GetContext implementations.

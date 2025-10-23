@@ -1,8 +1,8 @@
-#include "GameOverScreen.h"
-#include "MainMenuScreen.h"
-#include "../ScreenManager.h"
-#include "../GameContext.h"
-#include "../GameManager.h"
+#include "GameOverScreen.hpp"
+#include "MainMenuScreen.hpp"
+#include "../ScreenManager.hpp"
+#include "../GameContext.hpp"
+#include "../GameManager.hpp"
 #include <raylib.h>
 
 GameOverScreen::GameOverScreen(ScreenManager& manager)

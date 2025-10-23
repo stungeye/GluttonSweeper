@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Screen.h"
+#include "../Screen.hpp"
 #include <array>
 #include <string>
 

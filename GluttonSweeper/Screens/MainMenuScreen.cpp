@@ -1,7 +1,7 @@
-#include "MainMenuScreen.h"
-#include "OptionsScreen.h"
-#include "GameplayScreen.h"
-#include "../ScreenManager.h"
+#include "MainMenuScreen.hpp"
+#include "OptionsScreen.hpp"
+#include "GameplayScreen.hpp"
+#include "../ScreenManager.hpp"
 #include <raylib.h>
 #include <memory>
 

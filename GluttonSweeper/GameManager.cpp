@@ -1,4 +1,4 @@
-#include "GameManager.h"
+#include "GameManager.hpp"
 
 GameManager::GameManager()
     : score{ 0 }, timeRemaining{ GAME_DURATION }, gameStarted{ false } {

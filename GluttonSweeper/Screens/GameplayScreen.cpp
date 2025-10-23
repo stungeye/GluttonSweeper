@@ -1,16 +1,17 @@
-#include "GameplayScreen.h"
-#include "MainMenuScreen.h"
-#include "GameOverScreen.h"
-#include "PauseOverlay.h"
-#include "../ScreenManager.h"
-#include "../GameContext.h"
-#include "../GameManager.h"
+#include "GameplayScreen.hpp"
+#include "MainMenuScreen.hpp"
+#include "GameOverScreen.hpp"
+#include "PauseOverlay.hpp"
+#include "../ScreenManager.hpp"
+#include "../GameContext.hpp"
+#include "../GameManager.hpp"
 #include <raylib.h>
 
 GameplayScreen::GameplayScreen(ScreenManager& manager)
     : FullScreen{ manager } {
 }
 
+// Update is acting as the Controller and the gameManager is the Model.
 void GameplayScreen::Update() {
     auto& game = GetContext().gameManager;
     
@@ -45,6 +46,7 @@ void GameplayScreen::Update() {
 	}
 }
 
+// Draw is acting as the View for the gameManager.
 void GameplayScreen::Draw() const {
     const auto& game = GetContext().gameManager;
     

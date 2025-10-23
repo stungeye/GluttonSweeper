@@ -1,5 +1,5 @@
-#include "PauseOverlay.h"
-#include "../ScreenManager.h"
+#include "PauseOverlay.hpp"
+#include "../ScreenManager.hpp"
 #include <raylib.h>
 
 PauseOverlay::PauseOverlay(ScreenManager& manager)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Screen.h"
+#include "../Screen.hpp"
 
 class GameplayScreen : public FullScreen {
 public:

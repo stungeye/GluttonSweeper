@@ -1,5 +1,5 @@
-#include "ScreenManager.h"
-#include "GameContext.h"
+#include "ScreenManager.hpp"
+#include "GameContext.hpp"
 
 ScreenManager::ScreenManager(GameContext& context) : shouldExit{ false }, context{ context } {
 }

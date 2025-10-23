@@ -1,6 +1,6 @@
-#include "LogoScreen.h"
-#include "MainMenuScreen.h"
-#include "../ScreenManager.h"
+#include "LogoScreen.hpp"
+#include "MainMenuScreen.hpp"
+#include "../ScreenManager.hpp"
 #include <raylib.h>
 
 LogoScreen::LogoScreen(ScreenManager& manager, const std::string& displayMsg, float duration)

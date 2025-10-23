@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Screen.h"
+#include "Screen.hpp"
 #include <memory>
 #include <vector>
 #include <type_traits>

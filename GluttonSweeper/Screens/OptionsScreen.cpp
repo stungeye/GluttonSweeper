@@ -1,5 +1,5 @@
-#include "OptionsScreen.h"
-#include "../ScreenManager.h"
+#include "OptionsScreen.hpp"
+#include "../ScreenManager.hpp"
 #include <raylib.h>
 
 OptionsScreen::OptionsScreen(ScreenManager& manager)
