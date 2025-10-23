@@ -1,5 +1,8 @@
 #pragma once
 
+// This GameManager class is the "Model" for our game.
+// GamePlayScreen's Update() acts as the "Controller"
+// and GamePlayScreen's Draw() acts as the "View".
 class GameManager {
 private:
     int score;

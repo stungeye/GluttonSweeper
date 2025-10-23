@@ -2,7 +2,12 @@
 #include "ScreenManager.h"
 #include "GameContext.h"
 
-// GetContext implementation - needs full ScreenManager definition
+/* 
+   GetContext implementations.
+   These couldn't be implemented in Screen.h without including 
+   ScreenManager.h which would cause a circular dependency as 
+   ScreenManager.h already includes Screen.h.
+*/
 GameContext& Screen::GetContext() {
     return manager.GetContext();
 }

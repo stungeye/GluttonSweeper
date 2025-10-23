@@ -48,10 +48,8 @@ void GameplayScreen::Update() {
 void GameplayScreen::Draw() const {
     const auto& game = GetContext().gameManager;
     
-    // Draw game background
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), DARKGREEN);
 
-    // Draw game elements
     DrawText("GAMEPLAY SCREEN", 50, 50, 40, YELLOW);
     
     if (!game.HasStarted()) {

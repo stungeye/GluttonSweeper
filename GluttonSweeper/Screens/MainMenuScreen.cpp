@@ -19,7 +19,7 @@ void MainMenuScreen::Update() {
     }
 
     // Select option
-    if (IsKeyPressed(KEY_ENTER)) {
+    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
         switch (selectedOption) {
             case 0:  // Play
                 RequestScreenChange<GameplayScreen>();
@@ -35,10 +35,8 @@ void MainMenuScreen::Update() {
 }
 
 void MainMenuScreen::Draw() const {
-    // Draw background
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), DARKGRAY);
 
-    // Draw title
     int titleWidth{ MeasureText("GLUTTON SWEEPER", 60) };
     DrawText("GLUTTON SWEEPER",
              GetScreenWidth() / 2 - titleWidth / 2,
@@ -46,7 +44,7 @@ void MainMenuScreen::Draw() const {
              60,
              YELLOW);
 
-    // Draw menu options
+	// Draw menu options
     int startY{ 200 };
     int spacing{ 80 };
 
