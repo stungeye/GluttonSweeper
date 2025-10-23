@@ -1,6 +1,7 @@
 #include "ScreenManager.h"
+#include "GameContext.h"
 
-ScreenManager::ScreenManager() : shouldExit{ false } {
+ScreenManager::ScreenManager(GameContext& context) : shouldExit{ false }, context{ context } {
 }
 
 void ScreenManager::Update() {

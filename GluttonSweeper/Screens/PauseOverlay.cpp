@@ -18,18 +18,18 @@ void PauseOverlay::Draw() const {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color{0, 0, 0, 150});
     
     // Draw PAUSED text
-    int pauseTextWidth = MeasureText("PAUSED", 60);
+    int pauseTextWidth{ MeasureText("PAUSED", 60) };
     DrawText("PAUSED",
              GetScreenWidth() / 2 - pauseTextWidth / 2,
-             GetScreenHeight() / 2 - 150,
+             GetScreenHeight() / 2 - 30,
              60,
              YELLOW);
     
     // Draw instructions
-    int instructWidth = MeasureText("Press P or ESC to resume", 20);
+    int instructWidth{ MeasureText("Press P or ESC to resume", 20) };
     DrawText("Press P or ESC to resume",
              GetScreenWidth() / 2 - instructWidth / 2,
-             GetScreenHeight() / 2 - 70,
+             GetScreenHeight() / 2 + 50,
              20,
              WHITE);
 }

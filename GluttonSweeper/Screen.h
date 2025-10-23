@@ -4,6 +4,7 @@
 #include <type_traits>
 
 class ScreenManager;
+struct GameContext;
 
 // Base for all screens
 class Screen {
@@ -14,6 +15,10 @@ private:
 
 protected:
     bool requestedClose;  // Protected so Overlay can set it
+
+    // Access to game context for derived classes (implemented in Screen.cpp)
+    GameContext& GetContext();
+    const GameContext& GetContext() const;
 
     // Template method - automatically injects manager and hides unique_ptr from derived classes
 	// typename T                   = type of the screen to create

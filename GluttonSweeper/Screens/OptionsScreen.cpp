@@ -13,17 +13,20 @@ void OptionsScreen::Update() {
 }
 
 void OptionsScreen::Draw() const {
+    // Draw semi-transparent overlay background
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color{0, 0, 0, 150});
+
     // Draw options panel
-    int panelWidth = 400;
-    int panelHeight = 300;
-    int panelX = GetScreenWidth() / 2 - panelWidth / 2;
-    int panelY = GetScreenHeight() / 2 - panelHeight / 2;
+    int panelWidth{ 400 };
+    int panelHeight{ 300 };
+    int panelX{ GetScreenWidth() / 2 - panelWidth / 2 };
+    int panelY{ GetScreenHeight() / 2 - panelHeight / 2 };
 
     DrawRectangle(panelX, panelY, panelWidth, panelHeight, DARKBLUE);
     DrawRectangleLines(panelX, panelY, panelWidth, panelHeight, YELLOW);
 
     // Draw title
-    int titleWidth = MeasureText("OPTIONS", 40);
+    int titleWidth{ MeasureText("OPTIONS", 40) };
     DrawText("OPTIONS",
              GetScreenWidth() / 2 - titleWidth / 2,
              panelY + 20,
@@ -35,7 +38,7 @@ void OptionsScreen::Draw() const {
     DrawText("Difficulty: Normal", panelX + 30, panelY + 150, 20, WHITE);
 
     // Draw instructions
-    int instructWidth = MeasureText("Press ESC to close", 16);
+    int instructWidth{ MeasureText("Press ESC to close", 16) };
     DrawText("Press ESC to close",
              GetScreenWidth() / 2 - instructWidth / 2,
              panelY + panelHeight - 40,

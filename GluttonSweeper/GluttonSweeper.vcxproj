@@ -127,7 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GluttonSweeper.cpp" />
+    <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="Screens\GameOverScreen.cpp" />
     <ClCompile Include="Screens\GameplayScreen.cpp" />
@@ -137,6 +139,8 @@
     <ClCompile Include="Screens\PauseOverlay.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameContext.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="ScreenManager.h" />
     <ClInclude Include="Screens\GameOverScreen.h" />

@@ -5,13 +5,16 @@
 #include <vector>
 #include <type_traits>
 
+struct GameContext;
+
 class ScreenManager {
 private:
     std::vector<std::unique_ptr<Screen>> screenStack;
     bool shouldExit;
+    GameContext& context;
 
 public:
-    ScreenManager();
+    ScreenManager(GameContext& context);
     ~ScreenManager() = default;
 
     // Template method - hides unique_ptr, automatically injects 'this'
@@ -25,4 +28,6 @@ public:
     void Draw() const;
 
     bool ShouldExit() const { return shouldExit; }
+    GameContext& GetContext() { return context; }
+    const GameContext& GetContext() const { return context; }
 };

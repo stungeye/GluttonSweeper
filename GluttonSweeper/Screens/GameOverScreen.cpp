@@ -1,14 +1,18 @@
 #include "GameOverScreen.h"
 #include "MainMenuScreen.h"
 #include "../ScreenManager.h"
+#include "../GameContext.h"
+#include "../GameManager.h"
 #include <raylib.h>
 
-GameOverScreen::GameOverScreen(ScreenManager& manager, int score)
-    : FullScreen{ manager }, finalScore{ score } {
+GameOverScreen::GameOverScreen(ScreenManager& manager)
+    : FullScreen{ manager } {
 }
 
 void GameOverScreen::Update() {
     if (IsKeyPressed(KEY_ENTER)) {
+        // Reset game state for next play
+        GetContext().gameManager.Reset();
         RequestScreenChange<MainMenuScreen>();
     }
 
@@ -18,20 +22,22 @@ void GameOverScreen::Update() {
 }
 
 void GameOverScreen::Draw() const {
+    auto& game = GetContext().gameManager;
+    
     // Draw background
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), MAROON);
 
     // Draw game over text
-    int gameOverWidth = MeasureText("GAME OVER", 80);
+    int gameOverWidth{ MeasureText("GAME OVER", 80) };
     DrawText("GAME OVER",
              GetScreenWidth() / 2 - gameOverWidth / 2,
              100,
              80,
              YELLOW);
 
-    // Draw final score
-    const char* scoreText = TextFormat("Final Score: %d", finalScore);
-    int scoreWidth = MeasureText(scoreText, 40);
+    // Draw final score from GameManager
+    const char* scoreText{ TextFormat("Final Score: %d", game.GetScore()) };
+    int scoreWidth{ MeasureText(scoreText, 40) };
     DrawText(scoreText,
              GetScreenWidth() / 2 - scoreWidth / 2,
              250,

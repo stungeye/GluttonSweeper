@@ -19,7 +19,7 @@ void LogoScreen::Update() {
 void LogoScreen::Draw() const {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), DARKBLUE);
 
-    int textWidth = MeasureText(displayMsg.c_str(), 40);
+    int textWidth{ MeasureText(displayMsg.c_str(), 40) };
     DrawText(displayMsg.c_str(),
              GetScreenWidth() / 2 - textWidth / 2,
              GetScreenHeight() / 2 - 20,

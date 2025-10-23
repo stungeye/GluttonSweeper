@@ -1,18 +1,26 @@
 #include "ScreenManager.h"
+#include "GameManager.h"
+#include "GameContext.h"
 #include "Screens/LogoScreen.h"
 #include <raylib.h>
 
 int main()
 {
     // Initialize window
-    const int SCREEN_WIDTH = 1280;
-    const int SCREEN_HEIGHT = 720;
+    const int SCREEN_WIDTH{ 1280 };
+    const int SCREEN_HEIGHT{ 720 };
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Gluttonous Key Smasher");
     SetTargetFPS(60);
 	SetExitKey(KEY_NULL);  // Disable default ESC key exit
 
-    // Create screen manager and set initial screen
-    ScreenManager screenManager;
+    // Create game systems
+    GameManager gameManager;
+    
+    // Create context holding all game systems
+    GameContext context{ gameManager };
+    
+    // Create screen manager with context
+    ScreenManager screenManager{ context };
     screenManager.SetInitialScreen<LogoScreen>("Gluttonous Key Smasher", 3.0f);
 
     // Main loop
