@@ -2,9 +2,9 @@
 
 #include "../Screen.hpp"
 
-class OptionsScreen : public Overlay {
+class OptionsOverlay : public Overlay {
 public:
-    OptionsScreen(ScreenManager& manager);
+    OptionsOverlay(ScreenManager& manager);
 
     void Update() override;
     void Draw() const override;

@@ -1,5 +1,5 @@
 #include "MainMenuScreen.hpp"
-#include "OptionsScreen.hpp"
+#include "OptionsOverlay.hpp"
 #include "GameplayScreen.hpp"
 #include "../ScreenManager.hpp"
 #include <raylib.h>
@@ -25,7 +25,7 @@ void MainMenuScreen::Update() {
                 RequestScreenChange<GameplayScreen>();
                 break;
             case 1:  // Options
-                RequestScreenChange<OptionsScreen>();
+                RequestScreenChange<OptionsOverlay>();
                 break;
             case 2:  // Exit
                 RequestExit();

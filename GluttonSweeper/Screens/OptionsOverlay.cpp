@@ -1,19 +1,19 @@
-#include "OptionsScreen.hpp"
+#include "OptionsOverlay.hpp"
 #include "../ScreenManager.hpp"
 #include <raylib.h>
 
-OptionsScreen::OptionsScreen(ScreenManager& manager)
+OptionsOverlay::OptionsOverlay(ScreenManager& manager)
     : Overlay{ manager } {
 }
 
-void OptionsScreen::Update() {
+void OptionsOverlay::Update() {
 	// This is a fake options screen for demonstration purposes.
     if (IsKeyPressed(KEY_ESCAPE)) {
         RequestClose();  // Signal overlay should close
     }
 }
 
-void OptionsScreen::Draw() const {
+void OptionsOverlay::Draw() const {
     // Draw semi-transparent overlay background
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color{0, 0, 0, 150});
 
