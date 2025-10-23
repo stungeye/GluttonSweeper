@@ -20,10 +20,10 @@ void ScreenManager::Update() {
     }
     // Check if top screen wants to transition
     else if (auto nextScreen = topScreen.TakeNextScreen()) {
-        if (!nextScreen->ShouldStack()) {
+        if (!nextScreen->ShouldStack()) { // If full screen
             // Replace all screens (full screen behavior)
             screenStack.clear();
-        }
+		} // Else overlay behavior (do nothing to stack)
 		screenStack.push_back(std::move(nextScreen));
     }
 }

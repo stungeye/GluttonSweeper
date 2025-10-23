@@ -5,8 +5,8 @@
 int main()
 {
     // Initialize window
-    const int SCREEN_WIDTH = 1280;
-    const int SCREEN_HEIGHT = 720;
+    const int SCREEN_WIDTH{ 1280 };
+    const int SCREEN_HEIGHT{ 720 };
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Gluttonous Key Smasher");
     SetTargetFPS(60);
 	SetExitKey(KEY_NULL);  // Disable default ESC key exit

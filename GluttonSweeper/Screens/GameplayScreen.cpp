@@ -28,7 +28,7 @@ void GameplayScreen::Update() {
         if (!gameStarted) {
             gameStarted = true;
         }
-        score += 10;
+        score += 1;
     }
 
     // Update timer if game has started
@@ -48,10 +48,10 @@ void GameplayScreen::Draw() const {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), DARKGREEN);
 
     // Draw game elements
-    DrawText("GAMEPLAY SCREEN", 50, 50, 40, YELLOW);
-    
+    DrawText("SMASH THAT KEY!", 50, 50, 40, YELLOW);
+   
     if (!gameStarted) {
-        DrawText("Press SPACE to start!", 50, 100, 30, WHITE);
+        DrawText("Press SPACE to start", 50, 100, 30, WHITE);
 		DrawText("Press ESC to return to menu", 50, 150, 20, WHITE);
     } else {
         DrawText("Press SPACE to gain points", 50, 100, 30, WHITE);

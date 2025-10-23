@@ -14,7 +14,7 @@ public:
     ScreenManager();
     ~ScreenManager() = default;
 
-    // Template method - hides unique_ptr, automatically injects 'this'
+    // Template method - hides unique_ptr, automatically injects the screen manager as 'this'
     template<typename T, typename... Args>
     void SetInitialScreen(Args&&... args) {
         static_assert(std::is_base_of_v<Screen, T>, "T must derive from Screen");
