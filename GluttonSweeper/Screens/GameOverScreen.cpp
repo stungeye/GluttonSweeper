@@ -8,7 +8,7 @@ GameOverScreen::GameOverScreen(ScreenManager& manager, int score)
 }
 
 void GameOverScreen::Update() {
-    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
+    if (IsKeyPressed(KEY_ENTER)) {
         RequestScreenChange<MainMenuScreen>();
     }
 
@@ -35,6 +35,6 @@ void GameOverScreen::Draw() const {
              40,
              WHITE);
 
-    DrawText("Press ENTER/SPACE to return to menu", 50, 400, 20, WHITE);
+    DrawText("Press ENTER to return to menu", 50, 400, 20, WHITE);
     DrawText("Press ESC to exit", 50, 430, 20, WHITE);
 }
