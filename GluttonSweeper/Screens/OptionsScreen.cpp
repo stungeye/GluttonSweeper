@@ -2,8 +2,8 @@
 #include "../ScreenManager.h"
 #include <raylib.h>
 
-OptionsScreen::OptionsScreen(ScreenManager& mgr)
-    : Overlay(mgr) {
+OptionsScreen::OptionsScreen(ScreenManager& manager)
+    : Overlay{ manager } {
 }
 
 void OptionsScreen::Update() {

@@ -1,6 +1,6 @@
 #include "ScreenManager.h"
 
-ScreenManager::ScreenManager() : shouldExit(false) {
+ScreenManager::ScreenManager() : shouldExit{ false } {
 }
 
 void ScreenManager::Update() {

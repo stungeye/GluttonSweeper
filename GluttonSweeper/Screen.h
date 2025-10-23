@@ -31,7 +31,7 @@ protected:
     }
 
 public:
-    Screen(ScreenManager& mgr) : manager(mgr), nextScreen(nullptr), requestedExit(false), requestedClose(false) {}
+    Screen(ScreenManager& manager) : manager{ manager }, nextScreen{ nullptr }, requestedExit{ false }, requestedClose{ false } {}
     virtual ~Screen() = default;
 
     virtual void Update() = 0;
@@ -54,7 +54,7 @@ public:
 // Full-screen screens (Logo, MainMenu, Gameplay, GameOver)
 class FullScreen : public Screen {
 public:
-    FullScreen(ScreenManager& mgr) : Screen(mgr) {}
+    FullScreen(ScreenManager& manager) : Screen{ manager } {}
     bool ShouldStack() const final { return false; }
 };
 
@@ -66,6 +66,6 @@ protected:
     }
 
 public:
-    Overlay(ScreenManager& mgr) : Screen(mgr) {}
+    Overlay(ScreenManager& manager) : Screen{ manager } {}
     bool ShouldStack() const final { return true; }
 };

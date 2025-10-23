@@ -10,7 +10,7 @@ private:
 	std::string displayMsg;
 
 public:
-    LogoScreen(ScreenManager& mgr, const std::string& displayMsg, float duration = 2.0f);
+    LogoScreen(ScreenManager& manager, const std::string& displayMsg, float duration = 2.0f);
 
     void Update() override;
     void Draw() const override;

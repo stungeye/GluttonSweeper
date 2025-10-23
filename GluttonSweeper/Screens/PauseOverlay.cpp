@@ -2,8 +2,8 @@
 #include "../ScreenManager.h"
 #include <raylib.h>
 
-PauseOverlay::PauseOverlay(ScreenManager& mgr)
-    : Overlay(mgr) {
+PauseOverlay::PauseOverlay(ScreenManager& manager)
+    : Overlay{ manager } {
 }
 
 void PauseOverlay::Update() {

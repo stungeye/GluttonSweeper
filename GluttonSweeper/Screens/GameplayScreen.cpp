@@ -5,19 +5,19 @@
 #include "../ScreenManager.h"
 #include <raylib.h>
 
-GameplayScreen::GameplayScreen(ScreenManager& mgr)
-    : FullScreen(mgr), score(0), timeRemaining(GAME_DURATION), gameStarted(false) {
+GameplayScreen::GameplayScreen(ScreenManager& manager)
+    : FullScreen{ manager }, score{ 0 }, timeRemaining{ GAME_DURATION }, gameStarted{ false } {
 }
 
 void GameplayScreen::Update() {
     // Toggle pause
-    if (IsKeyPressed(KEY_P)) {
+    if (IsKeyPressed(KEY_P) && gameStarted) {
         RequestScreenChange<PauseOverlay>();
         return;
     }
 
     // Return to menu
-    if (IsKeyPressed(KEY_ESCAPE)) {
+    if (IsKeyPressed(KEY_ESCAPE) && !gameStarted) {
         RequestScreenChange<MainMenuScreen>();
         return;
     }

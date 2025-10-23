@@ -10,7 +10,7 @@ private:
     static constexpr float GAME_DURATION = 10.0f;
 
 public:
-    GameplayScreen(ScreenManager& mgr);
+    GameplayScreen(ScreenManager& manager);
 
     void Update() override;
     void Draw() const override;

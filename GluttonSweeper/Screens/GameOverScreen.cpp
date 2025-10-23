@@ -3,8 +3,8 @@
 #include "../ScreenManager.h"
 #include <raylib.h>
 
-GameOverScreen::GameOverScreen(ScreenManager& mgr, int finalScore)
-    : FullScreen(mgr), finalScore(finalScore) {
+GameOverScreen::GameOverScreen(ScreenManager& manager, int score)
+    : FullScreen{ manager }, finalScore{ score } {
 }
 
 void GameOverScreen::Update() {

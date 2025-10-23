@@ -5,17 +5,17 @@
 #include <raylib.h>
 #include <memory>
 
-MainMenuScreen::MainMenuScreen(ScreenManager& mgr)
-    : FullScreen(mgr), selectedOption(0) {
+MainMenuScreen::MainMenuScreen(ScreenManager& manager)
+    : FullScreen{ manager }, selectedOption{ 0 } {
 }
 
 void MainMenuScreen::Update() {
     // Navigate menu
     if (IsKeyPressed(KEY_UP)) {
-        selectedOption = (selectedOption - 1 + 3) % 3;
+        selectedOption = (selectedOption - 1 + options.size()) % options.size();
     }
     if (IsKeyPressed(KEY_DOWN)) {
-        selectedOption = (selectedOption + 1) % 3;
+        selectedOption = (selectedOption + 1) % options.size();
     }
 
     // Select option
@@ -47,7 +47,6 @@ void MainMenuScreen::Draw() const {
              YELLOW);
 
     // Draw menu options
-    const char* options[] = {"Play", "Options", "Exit"};
     int startY = 200;
     int spacing = 80;
 
@@ -55,6 +54,6 @@ void MainMenuScreen::Draw() const {
         Color textColor = (i == selectedOption) ? YELLOW : WHITE;
         const char* prefix = (i == selectedOption) ? "> " : "  ";
         DrawText(prefix, 300, startY + i * spacing, 40, textColor);
-        DrawText(options[i], 350, startY + i * spacing, 40, textColor);
+        DrawText(options[i].c_str(), 350, startY + i * spacing, 40, textColor);
     }
 }
