@@ -3,8 +3,8 @@
 #include "../ScreenManager.h"
 #include <raylib.h>
 
-LogoScreen::LogoScreen(ScreenManager& mgr, float duration)
-    : FullScreen(mgr), displayTime(duration), elapsedTime(0.0f) {
+LogoScreen::LogoScreen(ScreenManager& mgr, const std::string& displayMsg, float duration)
+    : FullScreen(mgr), displayMsg(displayMsg), displayTime(duration), elapsedTime(0.0f) {
 }
 
 void LogoScreen::Update() {
@@ -26,8 +26,8 @@ void LogoScreen::Draw() const {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), DARKBLUE);
 
     // Draw placeholder logo text
-    int textWidth = MeasureText("GLUTTON SWEEPER", 40);
-    DrawText("GLUTTON SWEEPER",
+    int textWidth = MeasureText(displayMsg.c_str(), 40);
+    DrawText(displayMsg.c_str(),
              GetScreenWidth() / 2 - textWidth / 2,
              GetScreenHeight() / 2 - 20,
              40,

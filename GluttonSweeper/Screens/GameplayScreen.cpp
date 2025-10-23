@@ -52,16 +52,12 @@ void GameplayScreen::Draw() const {
     
     if (!gameStarted) {
         DrawText("Press SPACE to start!", 50, 100, 30, WHITE);
+		DrawText("Press ESC to return to menu", 50, 150, 20, WHITE);
     } else {
-        DrawText("Press SPACE to gain points", 50, 100, 20, WHITE);
+        DrawText("Press SPACE to gain points", 50, 100, 30, WHITE);
+		DrawText("Press P to pause", 50, 150, 20, WHITE);
     }
-    
-    DrawText("Press P to pause", 50, 150, 20, WHITE);
-    DrawText("Press ESC to return to menu", 50, 180, 20, WHITE);
 
-    // Draw score
-    DrawText(TextFormat("Score: %d", score), GetScreenWidth() - 700, 300, 100, WHITE);
-    
-    // Draw timer
-    DrawText(TextFormat("Time: %.1f", timeRemaining), GetScreenWidth() - 700, 400, 100, timeRemaining < 3.0f ? RED : WHITE);
+    DrawText(TextFormat("Score: %d", score), GetScreenWidth() / 2 - 200, 350, 100, WHITE);
+    DrawText(TextFormat("Time: %.1f", timeRemaining), GetScreenWidth() / 2 - 200, 450, 100, timeRemaining < 3.0f ? RED : WHITE);
 }

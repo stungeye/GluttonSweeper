@@ -21,7 +21,7 @@ void PauseOverlay::Draw() const {
     int pauseTextWidth = MeasureText("PAUSED", 60);
     DrawText("PAUSED",
              GetScreenWidth() / 2 - pauseTextWidth / 2,
-             GetScreenHeight() / 2 - 30,
+             GetScreenHeight() / 2 - 150,
              60,
              YELLOW);
     
@@ -29,7 +29,7 @@ void PauseOverlay::Draw() const {
     int instructWidth = MeasureText("Press P or ESC to resume", 20);
     DrawText("Press P or ESC to resume",
              GetScreenWidth() / 2 - instructWidth / 2,
-             GetScreenHeight() / 2 + 50,
+             GetScreenHeight() / 2 - 70,
              20,
              WHITE);
 }
