@@ -37,7 +37,7 @@ int main()
 			screenManager.Draw();
 			EndDrawing();
 		}
-	}
+	} // All three manager objects go out of scope and are destroyed here.
 
     // Cleanup
     CloseWindow();

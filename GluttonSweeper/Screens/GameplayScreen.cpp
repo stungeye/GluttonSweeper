@@ -75,20 +75,21 @@ void GameplayScreen::Draw() const {
     if (!game.HasStarted()) {
         DrawText("Press SPACE to start!", 50, 100, 30, WHITE);
 		DrawText("Press ESC to return to menu", 50, 150, 20, WHITE);
-    } else {
-        DrawText("Press SPACE to gain points", 50, 100, 30, WHITE);
+	}
+	else {
+		DrawText("Press SPACE to gain points", 50, 100, 30, WHITE);
 		DrawText("Press P to pause", 50, 150, 20, WHITE);
-    }
 
-    DrawText(TextFormat("Score: %d", game.GetScore()), GetScreenWidth() / 2 - 200, 350, 100, WHITE);
-    DrawText(TextFormat("Time: %.1f", game.GetTimeRemaining()), 
-             GetScreenWidth() / 2 - 200, 450, 100, 
-             game.GetTimeRemaining() < 3.0f ? RED : WHITE);
+		DrawText(TextFormat("Score: %d", game.GetScore()), GetScreenWidth() / 2 - 200, 350, 100, WHITE);
+		DrawText(TextFormat("Time: %.1f", game.GetTimeRemaining()),
+			GetScreenWidth() / 2 - 200, 450, 100,
+			game.GetTimeRemaining() < 3.0f ? RED : WHITE);
 
-	if (zombieTextures[zombieIndex] && zombieTextures[zombieIndex]->isValid()) {
-		DrawTexture(
-			zombieTextures[zombieIndex]->raw(),
-			0 + game.GetScore() * ZOMBIE_STEP_X,
-			GetScreenHeight() - 128, WHITE);
+		if (zombieTextures[zombieIndex] && zombieTextures[zombieIndex]->isValid()) {
+			DrawTexture(
+				zombieTextures[zombieIndex]->raw(),
+				0 + game.GetScore() * ZOMBIE_STEP_X,
+				GetScreenHeight() - 128, WHITE);
+		}
 	}
 }

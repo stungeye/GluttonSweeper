@@ -8,7 +8,7 @@
 // ManagedTexture ensures that textures loaded from disk are properly
 // unloaded when the object is destroyed, preventing GPU memory leaks.
 //
-// **IMPORTANT: Do not create ManagedTexture directly.**
+// **IMPORTANT: Do not create a ManagedTexture directly.**
 //// Use TextureManager::GetOrLoad() instead, which provides:
 ////   - Automatic caching (same file loaded only once)
 ////   - Shared ownership via std::shared_ptr
