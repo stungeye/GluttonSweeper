@@ -11,7 +11,7 @@ GameplayScreen::GameplayScreen(ScreenManager& manager)
     : FullScreen{ manager } {
 	// Load zombie textures from Assets/zombie_#.png into array:
 	for (std::size_t i{ 0 }; i < zombieTextures.size(); ++i) {
-		zombieTextures[i] = GetContext().textureManager.getOrLoad(
+		zombieTextures[i] = GetContext().textureManager.GetOrLoad(
 			"Assets/zombie_" + std::to_string(i) + ".png");
 	}
 }
@@ -85,8 +85,10 @@ void GameplayScreen::Draw() const {
              GetScreenWidth() / 2 - 200, 450, 100, 
              game.GetTimeRemaining() < 3.0f ? RED : WHITE);
 
-	DrawTexture(
-		zombieTextures[zombieIndex]->raw(),
-		0 + game.GetScore() * ZOMBIE_STEP_X,
-		GetScreenHeight() - 128, WHITE);
+	if (zombieTextures[zombieIndex] && zombieTextures[zombieIndex]->isValid()) {
+		DrawTexture(
+			zombieTextures[zombieIndex]->raw(),
+			0 + game.GetScore() * ZOMBIE_STEP_X,
+			GetScreenHeight() - 128, WHITE);
+	}
 }

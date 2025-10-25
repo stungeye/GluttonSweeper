@@ -3,6 +3,21 @@
 #include "raylib.h"
 #include <string>
 
+// RAII wrapper for raylib Texture2D resources.
+//
+// ManagedTexture ensures that textures loaded from disk are properly
+// unloaded when the object is destroyed, preventing GPU memory leaks.
+//
+// **IMPORTANT: Do not create ManagedTexture directly.**
+//// Use TextureManager::GetOrLoad() instead, which provides:
+////   - Automatic caching (same file loaded only once)
+////   - Shared ownership via std::shared_ptr
+////   - Automatic cleanup when all references are dropped
+//
+//// ManagedTexture is non-copyable and non-movable because:
+////   - Each instance owns a unique GPU resource (Texture2D)
+////   - TextureManager handles sharing via std::shared_ptr
+////   - Moving/copying would complicate resource ownership
 class ManagedTexture final {
 public:
     ManagedTexture(const std::string& path)

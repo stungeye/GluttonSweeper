@@ -7,7 +7,7 @@
 
 GameOverScreen::GameOverScreen(ScreenManager& manager)
     : FullScreen{ manager } {
-	zombieTexture = GetContext().textureManager.getOrLoad("Assets/zombie_0.png");
+	zombieTexture = GetContext().textureManager.GetOrLoad("Assets/zombie_0.png");
 }
 
 void GameOverScreen::Update() {

@@ -7,20 +7,26 @@ ScreenManager::ScreenManager(GameContext& context) : shouldExit{ false }, contex
 void ScreenManager::Update() {
     if (screenStack.empty()) return;
 
-	Screen& topScreen = *screenStack.back();
-
-    topScreen.Update();
+	// screenStack.back() is the top screen
+    screenStack.back()->Update();
+    const bool wantsClose{ screenStack.back()->WantsClose() };
+    const bool wantsExit{ screenStack.back()->WantsExit() };
+	std::unique_ptr<Screen> nextScreen{ screenStack.back()->TakeNextScreen() };
 
     // Check if top screen wants to close
-    if (topScreen.WantsClose()) {
+    if (wantsClose) {
         screenStack.pop_back();
+        return;
     }
+
     // Check if top screen wants to exit
-    else if (topScreen.WantsExit()) {
+    if (wantsExit) {
         shouldExit = true;
+        return;
     }
+
     // Check if top screen wants to transition
-    else if (auto nextScreen = topScreen.TakeNextScreen()) {
+    if (nextScreen) {
         if (!nextScreen->ShouldStack()) {
             // Replace all screens (full screen behavior)
             screenStack.clear();

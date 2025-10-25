@@ -7,6 +7,21 @@
 
 struct GameContext;
 
+// Manages the screen stack and application flow.
+//
+// The ScreenManager maintains a stack of screens and handles:
+//   - Screen transitions (push/pop/replace)
+//   - Update/Draw delegation to active screens
+//   - Application exit requests
+//   - Providing access to game-wide context (GameManager, TextureManager, etc.)
+//
+// Screens are managed as a stack:
+//   - FullScreens replace the current screen (pop old, push new)
+//   - Overlays stack on top of the current screen (push only)
+//   - Overlays can close themselves (pop)
+//
+// The manager is initialized with a GameContext reference and an initial screen.
+// It updates and draws screens each frame until an exit is requested.
 class ScreenManager {
 private:
     std::vector<std::unique_ptr<Screen>> screenStack;
