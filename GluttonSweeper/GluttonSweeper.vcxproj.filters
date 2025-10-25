@@ -13,69 +13,93 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Base Classes">
+      <UniqueIdentifier>{29c97073-199d-4aa4-b780-176079449058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Screens">
+      <UniqueIdentifier>{c50c2555-7021-4552-b042-253c159c89b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Overlays">
+      <UniqueIdentifier>{b6e72fa7-306f-4b15-b418-4d08bfab5665}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Base Classes">
+      <UniqueIdentifier>{781a6da8-9302-4061-9ca0-1e24c9a1a230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Overlays">
+      <UniqueIdentifier>{b93096de-d1d2-4ee3-94c7-90f8b2c46304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Screens">
+      <UniqueIdentifier>{6544be9b-3ae4-4967-aac8-8dc2d0850f76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source Files\Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\GameOverScreen.cpp">
+      <Filter>Source Files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\GameplayScreen.cpp">
+      <Filter>Source Files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\LogoScreen.cpp">
+      <Filter>Source Files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\MainMenuScreen.cpp">
+      <Filter>Source Files\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\OptionsOverlay.cpp">
+      <Filter>Source Files\Overlays</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\PauseOverlay.cpp">
+      <Filter>Source Files\Overlays</Filter>
+    </ClCompile>
+    <ClCompile Include="Screen.cpp">
+      <Filter>Source Files\Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenManager.cpp">
+      <Filter>Source Files\Base Classes</Filter>
+    </ClCompile>
     <ClCompile Include="GluttonSweeper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Screens\LogoScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Screens\MainMenuScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Screens\GameplayScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Screens\GameOverScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Screens\OptionsScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Screens\PauseOverlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Screen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Screen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameContext.hpp">
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
-    <ClInclude Include="ScreenManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameManager.hpp">
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Screens\LogoScreen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ManagedTexture.hpp">
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Screens\MainMenuScreen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Screen.hpp">
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Screens\GameplayScreen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ScreenManager.hpp">
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Screens\GameOverScreen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TextureManager.hpp">
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Screens\OptionsScreen.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Screens\GameOverScreen.hpp">
+      <Filter>Header Files\Screens</Filter>
     </ClInclude>
-    <ClInclude Include="Screens\PauseOverlay.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Screens\GameplayScreen.hpp">
+      <Filter>Header Files\Screens</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Screens\LogoScreen.hpp">
+      <Filter>Header Files\Screens</Filter>
     </ClInclude>
-    <ClInclude Include="GameContext.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Screens\MainMenuScreen.hpp">
+      <Filter>Header Files\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\OptionsOverlay.hpp">
+      <Filter>Header Files\Overlays</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\PauseOverlay.hpp">
+      <Filter>Header Files\Overlays</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
