@@ -25,4 +25,12 @@ struct GameContext {
     GameContext(GameManager& gm, TextureManager& tm) 
         : gameManager{ gm }, textureManager{ tm } {
     }
+
+    // Non-copyable (and non-assignable)
+    GameContext(const GameContext&) = delete;
+    GameContext& operator=(const GameContext&) = delete;
+
+    // Also non-movable to avoid rebinding references implicitly
+    GameContext(GameContext&&) = delete;
+    GameContext& operator=(GameContext&&) = delete;
 };
