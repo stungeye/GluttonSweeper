@@ -37,8 +37,8 @@ void MainMenuScreen::Update() {
 void MainMenuScreen::Draw() const {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), DARKGRAY);
 
-    int titleWidth{ MeasureText("GLUTTON SWEEPER", 60) };
-    DrawText("GLUTTON SWEEPER",
+    int titleWidth{ MeasureText("GLUTTONOUS KEY SMASHER", 60) };
+    DrawText("GLUTTONOUS KEY SMASHER",
              GetScreenWidth() / 2 - titleWidth / 2,
              50,
              60,
