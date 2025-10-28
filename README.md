@@ -21,16 +21,19 @@ Important Tile Indices:
 0049: Orange greebled tile.
 0060: Reticle.
 0063: Crate.
-0064: Tombstone.
+0064: Stone cross.
+0065: Tombstone.
 0082: Barrel.
 0084: Wizard.
 0089: Chest closed.
 0090: Chest partially open.
 0091: Chest fully open.
 0092: Chest fully open with loot.
+0100: Wise woman.
 0108: Slime.
 0109: Cyclops.
 0110: Lobster.
+0111: Dark Wizard.
 0114: Potion.
 0120: Bat.
 0121: Ghost.
