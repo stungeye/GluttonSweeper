@@ -54,8 +54,8 @@ public:
     Texture2D GetTexture() const { return renderTexture.texture; }
 
     // Get the size of the generated texture
-    int GetWidth() const { return renderTexture.texture.width; }
-    int GetHeight() const { return renderTexture.texture.height; }
+    int GetTextureWidth() const { return renderTexture.texture.width; }
+    int GetTextureHeight() const { return renderTexture.texture.height; }
 
     // Convert pixel coordinates (relative to board) to tile coordinates
     // Returns std::nullopt if position is outside board bounds

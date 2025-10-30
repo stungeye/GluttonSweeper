@@ -44,17 +44,16 @@ void GameplayScreen::Update() {
         return;
     }
 
+	// Convert screen position to board-relative position
+	const Vector2 mousePos = GetMousePosition();
+	const float boardX = mousePos.x - boardPosition.x;
+	const float boardY = mousePos.y - boardPosition.y;
+
     // Handle mouse input for tile interactions
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        Vector2 mousePos = GetMousePosition();
-        
-        // Convert screen position to board-relative position
-        float boardX = mousePos.x - boardPosition.x;
-        float boardY = mousePos.y - boardPosition.y;
-        
         // Get tile coordinates
-        if (auto tilePos = boardView.GetTileAtPosition(boardX, boardY)) {
-            auto [tileX, tileY] = *tilePos;
+        if (const auto tilePos = boardView.GetTileAtPosition(boardX, boardY)) {
+            const auto [tileX, tileY] = *tilePos;
             
             // If this is the first click, initialize the board with this position as safe
             if (firstClick) {
@@ -70,15 +69,9 @@ void GameplayScreen::Update() {
 
     // Right click to flag
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-        Vector2 mousePos = GetMousePosition();
-        
-        // Convert screen position to board-relative position
-        float boardX = mousePos.x - boardPosition.x;
-        float boardY = mousePos.y - boardPosition.y;
-        
         // Get tile coordinates
-        if (auto tilePos = boardView.GetTileAtPosition(boardX, boardY)) {
-            auto [tileX, tileY] = *tilePos;
+        if (const auto tilePos = boardView.GetTileAtPosition(boardX, boardY)) {
+            const auto [tileX, tileY] = *tilePos;
             
             // If this is the first interaction, initialize the board first
             // (though flagging first is unusual, we should handle it)
@@ -112,7 +105,7 @@ void GameplayScreen::Draw() const {
     DrawText("Left Click: Reveal | Right Click: Flag | ESC: Menu", 50, 100, 20, WHITE);
 
     // Draw the board view
-    Texture2D texture = boardView.GetTexture();
+    const Texture2D texture = boardView.GetTexture();
     DrawTextureRec(texture,
         { 0, 0, (float)texture.width, -(float)texture.height },
         boardPosition,

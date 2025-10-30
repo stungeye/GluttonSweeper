@@ -15,8 +15,6 @@ BoardView::BoardView(TextureManager& tm,
     , tileSize{ size }
     , fontSize{ fontSz }
     , isInitialized{ false } {
-	// Log Tile Size using Raylib's TraceLog
-	TraceLog(LOG_INFO, "BoardView: Initializing with tile size: %d", tileSize);
     // Load tile textures
     unrevealedTile = textureManager.GetOrLoad(unrevealedPath);
     flaggedTile = textureManager.GetOrLoad(flaggedPath);
@@ -47,8 +45,8 @@ void BoardView::Generate(const Board& board) {
     unloadRenderTexture();
 
     // Calculate render texture size based on board dimensions
-    int width = board.GetWidth() * tileSize;
-    int height = board.GetHeight() * tileSize;
+    const int width = board.GetWidth() * tileSize;
+    const int height = board.GetHeight() * tileSize;
 
     // Create new render texture
     renderTexture = LoadRenderTexture(width, height);
@@ -135,8 +133,8 @@ std::optional<std::pair<int, int>> BoardView::GetTileAtPosition(float x, float y
     const int tileY = static_cast<int>(y / tileSize);
 
     // Calculate board dimensions from texture size
-    const int boardWidth = GetWidth() / tileSize;
-    const int boardHeight = GetHeight() / tileSize;
+    const int boardWidth = GetTextureWidth() / tileSize;
+    const int boardHeight = GetTextureHeight() / tileSize;
 
     // Check if coordinates are within board bounds
     if (tileX >= 0 && tileX < boardWidth && tileY >= 0 && tileY < boardHeight) {
