@@ -70,6 +70,8 @@ void BoardView::Generate(const Board& board) {
                 // Draw unrevealed or flagged tile
                 if (Tile::IsFlagged(tile)) {
                     if (flaggedTile && flaggedTile->isValid()) {
+                        DrawTextureEx(unrevealedTile->raw(), position, 0.0f, 
+                                     static_cast<float>(tileSize) / unrevealedTile->width(), WHITE);
                         DrawTextureEx(flaggedTile->raw(), position, 0.0f, 
                                      static_cast<float>(tileSize) / flaggedTile->width(), WHITE);
                     }
