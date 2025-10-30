@@ -1,0 +1,57 @@
+#pragma once
+
+#include "Tile.hpp"
+#include <vector>
+
+// Manages the minesweeper game board.
+//
+// The Board class handles:
+//   - Board creation and initialization
+//   - Mine placement
+//   - Tile revealing (with flood-fill for empty tiles)
+//   - Flag toggling
+//   - Win/loss state detection
+//
+// Tiles are represented as uint8_t (see Tile.hpp for encoding).
+//
+// Usage:
+//   Board board(10, 10, 15);  // 10x10 board with 15 mines
+//   board.Initialize();
+//   
+//   if (board.RevealTile(x, y)) {
+//       // Tile revealed successfully
+//   }
+//   
+//   board.ToggleFlag(x, y);
+class Board {
+public:
+    Board(int width, int height, int mineCount);
+
+    void Initialize();
+    bool RevealTile(int x, int y);
+    void ToggleFlag(int x, int y);
+	void revealAll();
+
+    Tile::TileValue GetTile(int x, int y) const;
+    int GetWidth() const { return width; }
+    int GetHeight() const { return height; }
+    int GetMineCount() const { return mineCount; }
+    
+    bool IsGameOver() const { return gameOver; }
+    bool IsGameWon() const { return gameWon; }
+
+private:
+    void placeMines();
+    void calculateAdjacentMines();
+    void revealAdjacentTiles(int x, int y);
+    bool isValidPosition(int x, int y) const;
+    int countAdjacentMines(int x, int y) const;
+    void checkWinCondition();
+
+    int width;
+    int height;
+    int mineCount;
+    std::vector<std::vector<Tile::TileValue>> tiles;
+    bool gameOver{ false };
+    bool gameWon{ false };
+};

@@ -8,9 +8,9 @@
 int main()
 {
     // Initialize window
-    const int SCREEN_WIDTH{ 1280 };
-    const int SCREEN_HEIGHT{ 720 };
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Gluttonous Key Smasher");
+    const int SCREEN_WIDTH{ 720 };
+    const int SCREEN_HEIGHT{ 800 };
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Dungeon Sweeper");
     SetTargetFPS(60);
 	SetExitKey(KEY_NULL);  // Disable default ESC key exit
 
@@ -24,7 +24,7 @@ int main()
 
 		// Create screen manager with context
 		ScreenManager screenManager{ context };
-		screenManager.SetInitialScreen<LogoScreen>("Gluttonous Key Smasher", 3.0f);
+		screenManager.SetInitialScreen<LogoScreen>("Dungeon Sweeper", 3.0f);
 
 		// Main loop
 		while (!WindowShouldClose() && !screenManager.ShouldExit()) {

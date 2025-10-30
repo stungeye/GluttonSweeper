@@ -63,6 +63,12 @@
     <ClCompile Include="GluttonSweeper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BoardView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameContext.hpp">
@@ -100,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="Screens\PauseOverlay.hpp">
       <Filter>Header Files\Overlays</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardView.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
