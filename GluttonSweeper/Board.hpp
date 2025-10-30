@@ -2,6 +2,7 @@
 
 #include "Tile.hpp"
 #include <vector>
+#include <optional>
 
 // Manages the minesweeper game board.
 //
@@ -16,7 +17,9 @@
 //
 // Usage:
 //   Board board(10, 10, 15);  // 10x10 board with 15 mines
-//   board.Initialize();
+//   board.Initialize();  // Random mine placement
+//   // Or ensure first click is safe:
+//   board.Initialize({5, 5});  // No mines at (5,5)
 //   
 //   if (board.RevealTile(x, y)) {
 //       // Tile revealed successfully
@@ -27,10 +30,10 @@ class Board {
 public:
     Board(int width, int height, int mineCount);
 
-    void Initialize();
+    void Initialize(std::optional<std::pair<int, int>> safePosition = std::nullopt);
     bool RevealTile(int x, int y);
     void ToggleFlag(int x, int y);
-	void revealAll();
+    void revealAll();
 
     Tile::TileValue GetTile(int x, int y) const;
     int GetWidth() const { return width; }
@@ -41,7 +44,7 @@ public:
     bool IsGameWon() const { return gameWon; }
 
 private:
-    void placeMines();
+    void placeMines(std::optional<std::pair<int, int>> safePosition);
     void calculateAdjacentMines();
     void revealAdjacentTiles(int x, int y);
     bool isValidPosition(int x, int y) const;

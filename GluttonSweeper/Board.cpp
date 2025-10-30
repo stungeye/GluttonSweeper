@@ -11,7 +11,7 @@ Board::Board(int w, int h, int mines)
     , tiles(h, std::vector<Tile::TileValue>(w, Tile::UNREVEALED_EMPTY)) {
 }
 
-void Board::Initialize() {
+void Board::Initialize(std::optional<std::pair<int, int>> safePosition) {
     // Reset all tiles to unrevealed empty
     for (auto& row : tiles) {
         for (auto& tile : row) {
@@ -22,15 +22,20 @@ void Board::Initialize() {
     gameOver = false;
     gameWon = false;
 
-    placeMines();
+    placeMines(safePosition);
     calculateAdjacentMines();
 }
 
-void Board::placeMines() {
+void Board::placeMines(std::optional<std::pair<int, int>> safePosition) {
     // Create a list of all positions
     std::vector<std::pair<int, int>> positions;
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
+            // Skip the safe position if provided
+            if (safePosition.has_value() && 
+                safePosition->first == x && safePosition->second == y) {
+                continue;
+            }
             positions.push_back({ x, y });
         }
     }

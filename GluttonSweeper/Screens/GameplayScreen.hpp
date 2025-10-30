@@ -9,6 +9,7 @@ private:
     Board board;
     BoardView boardView;
     Vector2 boardPosition;
+    bool firstClick;
     
 public:
     GameplayScreen(ScreenManager& manager);

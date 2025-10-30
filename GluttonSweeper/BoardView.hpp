@@ -3,6 +3,8 @@
 #include "TextureManager.hpp"
 #include <raylib.h>
 #include <string>
+#include <utility>
+#include <optional>
 
 // Forward declaration
 class Board;
@@ -54,6 +56,10 @@ public:
     // Get the size of the generated texture
     int GetWidth() const { return renderTexture.texture.width; }
     int GetHeight() const { return renderTexture.texture.height; }
+
+    // Convert pixel coordinates (relative to board) to tile coordinates
+    // Returns std::nullopt if position is outside board bounds
+    std::optional<std::pair<int, int>> GetTileAtPosition(float x, float y) const;
 
 private:
     void unloadRenderTexture();

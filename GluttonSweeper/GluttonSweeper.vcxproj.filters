@@ -63,11 +63,11 @@
     <ClCompile Include="GluttonSweeper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BoardView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Board.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="BoardView.cpp">
+      <Filter>Source Files\Base Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,14 +107,14 @@
     <ClInclude Include="Screens\PauseOverlay.hpp">
       <Filter>Header Files\Overlays</Filter>
     </ClInclude>
+    <ClInclude Include="Board.hpp">
+      <Filter>Header Files\Base Classes</Filter>
+    </ClInclude>
     <ClInclude Include="BoardView.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="Tile.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

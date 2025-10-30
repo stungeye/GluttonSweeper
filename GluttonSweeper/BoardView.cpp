@@ -15,7 +15,8 @@ BoardView::BoardView(TextureManager& tm,
     , tileSize{ size }
     , fontSize{ fontSz }
     , isInitialized{ false } {
-    
+	// Log Tile Size using Raylib's TraceLog
+	TraceLog(LOG_INFO, "BoardView: Initializing with tile size: %d", tileSize);
     // Load tile textures
     unrevealedTile = textureManager.GetOrLoad(unrevealedPath);
     flaggedTile = textureManager.GetOrLoad(flaggedPath);
@@ -126,4 +127,21 @@ void BoardView::unloadRenderTexture() {
         UnloadRenderTexture(renderTexture);
         isInitialized = false;
     }
+}
+
+std::optional<std::pair<int, int>> BoardView::GetTileAtPosition(float x, float y) const {
+    // Convert pixel position to tile coordinates
+    const int tileX = static_cast<int>(x / tileSize);
+    const int tileY = static_cast<int>(y / tileSize);
+
+    // Calculate board dimensions from texture size
+    const int boardWidth = GetWidth() / tileSize;
+    const int boardHeight = GetHeight() / tileSize;
+
+    // Check if coordinates are within board bounds
+    if (tileX >= 0 && tileX < boardWidth && tileY >= 0 && tileY < boardHeight) {
+        return std::make_pair(tileX, tileY);
+    }
+
+    return std::nullopt;  // Position is outside board
 }
