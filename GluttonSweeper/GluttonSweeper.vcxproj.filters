@@ -36,9 +36,6 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files\Base Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Screens\GameOverScreen.cpp">
-      <Filter>Source Files\Screens</Filter>
-    </ClCompile>
     <ClCompile Include="Screens\GameplayScreen.cpp">
       <Filter>Source Files\Screens</Filter>
     </ClCompile>
@@ -69,6 +66,9 @@
     <ClCompile Include="BoardView.cpp">
       <Filter>Source Files\Base Classes</Filter>
     </ClCompile>
+    <ClCompile Include="Screens\DifficulyOverlay.cpp">
+      <Filter>Source Files\Overlays</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameContext.hpp">
@@ -88,9 +88,6 @@
     </ClInclude>
     <ClInclude Include="TextureManager.hpp">
       <Filter>Header Files\Base Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Screens\GameOverScreen.hpp">
-      <Filter>Header Files\Screens</Filter>
     </ClInclude>
     <ClInclude Include="Screens\GameplayScreen.hpp">
       <Filter>Header Files\Screens</Filter>
@@ -115,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Tile.hpp">
       <Filter>Header Files\Base Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Screens\DifficultyOverlay.hpp">
+      <Filter>Header Files\Overlays</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

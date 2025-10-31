@@ -12,7 +12,7 @@ private:
     bool firstClick;
     
 public:
-    GameplayScreen(ScreenManager& manager);
+    GameplayScreen(ScreenManager& manager, std::pair<int, int> boardSize, int numberOfMines);
 
     void Update() override;
     void Draw() const override;

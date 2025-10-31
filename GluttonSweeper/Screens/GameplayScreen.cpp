@@ -1,22 +1,21 @@
 #include "GameplayScreen.hpp"
 #include "MainMenuScreen.hpp"
-#include "GameOverScreen.hpp"
 #include "../ScreenManager.hpp"
 #include "../GameContext.hpp"
 #include "../GameManager.hpp"
 #include <raylib.h>
 
-GameplayScreen::GameplayScreen(ScreenManager& manager)
+GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> boardSize, int numberOfMines)
     : FullScreen{ manager }
-    , board{ 9, 9, 10 }  // 10x10 board with 15 mines
+    , board{ boardSize.first, boardSize.second, numberOfMines }  
     , boardView{ 
         GetContext().textureManager,
         "Assets/tile_0040.png",
         "Assets/tile_0114.png",
         "Assets/tile_0111.png",
         "Assets/tile_0000.png",
-        64,  // Tile size in pixels
-        60   // Font size for numbers
+        32,  // Tile size in pixels
+        30   // Font size for numbers
     }
     , boardPosition{ 50.0f, 150.0f }
     , firstClick{ true } {

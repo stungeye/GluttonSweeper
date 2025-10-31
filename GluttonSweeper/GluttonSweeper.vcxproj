@@ -133,7 +133,7 @@
     <ClCompile Include="GluttonSweeper.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
-    <ClCompile Include="Screens\GameOverScreen.cpp" />
+    <ClCompile Include="Screens\DifficulyOverlay.cpp" />
     <ClCompile Include="Screens\GameplayScreen.cpp" />
     <ClCompile Include="Screens\LogoScreen.cpp" />
     <ClCompile Include="Screens\MainMenuScreen.cpp" />
@@ -148,7 +148,7 @@
     <ClInclude Include="ManagedTexture.hpp" />
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
-    <ClInclude Include="Screens\GameOverScreen.hpp" />
+    <ClInclude Include="Screens\DifficultyOverlay.hpp" />
     <ClInclude Include="Screens\GameplayScreen.hpp" />
     <ClInclude Include="Screens\LogoScreen.hpp" />
     <ClInclude Include="Screens\MainMenuScreen.hpp" />

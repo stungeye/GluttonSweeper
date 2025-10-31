@@ -1,6 +1,6 @@
 #include "MainMenuScreen.hpp"
 #include "OptionsOverlay.hpp"
-#include "GameplayScreen.hpp"
+#include "DifficultyOverlay.hpp"
 #include "../ScreenManager.hpp"
 #include <raylib.h>
 #include <memory>
@@ -22,7 +22,7 @@ void MainMenuScreen::Update() {
     if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
         switch (selectedOption) {
             case 0:  // Play
-                RequestScreenChange<GameplayScreen>();
+                RequestScreenChange<DifficultyOverlay>();
                 break;
             case 1:  // Options
                 RequestScreenChange<OptionsOverlay>();
@@ -39,8 +39,9 @@ void MainMenuScreen::Draw() const {
 
 	const char* titleText{ "Dungeon Sweeper" };
     int titleWidth{ MeasureText(titleText, 60) };
+	int posX{ GetScreenWidth() / 2 - titleWidth / 2 };
     DrawText(titleText,
-             GetScreenWidth() / 2 - titleWidth / 2,
+             posX,
              50,
              60,
              YELLOW);
@@ -52,7 +53,7 @@ void MainMenuScreen::Draw() const {
     for (int i{ 0 }; i < 3; i++) {
         Color textColor{ (i == selectedOption) ? YELLOW : WHITE };
         const char* prefix{ (i == selectedOption) ? "> " : "  " };
-        DrawText(prefix, 300, startY + i * spacing, 40, textColor);
-        DrawText(options[i].c_str(), 350, startY + i * spacing, 40, textColor);
+        DrawText(prefix, posX - 50, startY + i * spacing, 40, textColor);
+        DrawText(options[i].c_str(), posX, startY + i * spacing, 40, textColor);
     }
 }
