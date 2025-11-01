@@ -21,9 +21,14 @@ class TextureManager;
 struct GameContext {
     GameManager& gameManager;
 	TextureManager& textureManager;
+    int originalWindowWidth;
+    int originalWindowHeight;
     
-    GameContext(GameManager& gm, TextureManager& tm) 
-        : gameManager{ gm }, textureManager{ tm } {
+    GameContext(GameManager& gm, TextureManager& tm, int windowWidth, int windowHeight) 
+        : gameManager{ gm }
+        , textureManager{ tm }
+        , originalWindowWidth{ windowWidth }
+        , originalWindowHeight{ windowHeight } {
     }
 
     // Non-copyable (and non-assignable)

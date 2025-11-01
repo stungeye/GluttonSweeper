@@ -37,6 +37,7 @@ public:
               const std::string& flaggedPath,
               const std::string& minePath,
               const std::string& emptyPath,
+              const std::string& framePath,
               int tileSize = 32,
               int fontSize = 20);
     ~BoardView();
@@ -63,6 +64,7 @@ public:
 
 private:
     void unloadRenderTexture();
+    void draw9SliceFrame(int boardWidth, int boardHeight);
     Color getNumberColor(int number) const;
 
     TextureManager& textureManager;
@@ -76,4 +78,7 @@ private:
     TextureManager::Handle flaggedTile;
     TextureManager::Handle mineTile;
     TextureManager::Handle emptyTile;
+    TextureManager::Handle frameTile;
+    
+    static constexpr int FRAME_SLICE_SIZE = 16;  // Each slice in the 9-slice frame is 16x16
 };

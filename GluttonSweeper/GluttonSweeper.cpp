@@ -20,7 +20,7 @@ int main()
 		TextureManager textureManager;
 
 		// Create context holding all game systems
-		GameContext context{ gameManager, textureManager };
+		GameContext context{ gameManager, textureManager, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 		// Create screen manager with context
 		ScreenManager screenManager{ context };

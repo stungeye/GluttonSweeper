@@ -2,11 +2,16 @@
 #include "OptionsOverlay.hpp"
 #include "DifficultyOverlay.hpp"
 #include "../ScreenManager.hpp"
+#include "../GameContext.hpp"
 #include <raylib.h>
 #include <memory>
 
 MainMenuScreen::MainMenuScreen(ScreenManager& manager)
     : FullScreen{ manager }, selectedOption{ 0 } {
+    
+    // Restore original window size when returning to main menu
+    auto& context = GetContext();
+    SetWindowSize(context.originalWindowWidth, context.originalWindowHeight);
 }
 
 void MainMenuScreen::Update() {

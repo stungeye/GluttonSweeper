@@ -31,7 +31,7 @@ void DifficultyOverlay::Update() {
 			RequestScreenChange<GameplayScreen>(std::make_pair(16, 16), 40);
             break;
         case 2:  // Hard
-			RequestScreenChange<GameplayScreen>(std::make_pair(25, 25), 100);
+			RequestScreenChange<GameplayScreen>(std::make_pair(30, 16), 99);
             break;
         }
     }
