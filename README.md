@@ -34,7 +34,9 @@ Important Tile Indices:
 0109: Cyclops.
 0110: Lobster.
 0111: Dark Wizard.
-0114: Potion.
+0114: Green Potion.
+0115: Red Potion.
+0116: Blue Potion.
 0120: Bat.
 0121: Ghost.
 0122: Spider.

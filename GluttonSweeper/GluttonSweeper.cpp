@@ -2,6 +2,7 @@
 #include "GameManager.hpp"
 #include "GameContext.hpp"
 #include "TextureManager.hpp"
+#include "Screen.hpp"
 #include "Screens/LogoScreen.hpp"
 #include <raylib.h>
 
@@ -13,6 +14,9 @@ int main()
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Dungeon Sweeper");
     SetTargetFPS(60);
 	SetExitKey(KEY_NULL);  // Disable default ESC key exit
+    
+    // Store original window dimensions in Screen base class
+    Screen::SetOriginalWindowDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	{ // Extra block scope so that TextureManager is destroyed before CloseWindow()
 		// Create game systems
@@ -20,7 +24,7 @@ int main()
 		TextureManager textureManager;
 
 		// Create context holding all game systems
-		GameContext context{ gameManager, textureManager, SCREEN_WIDTH, SCREEN_HEIGHT };
+		GameContext context{ gameManager, textureManager };
 
 		// Create screen manager with context
 		ScreenManager screenManager{ context };

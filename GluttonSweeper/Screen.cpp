@@ -1,17 +1,19 @@
 #include "Screen.hpp"
 #include "ScreenManager.hpp"
-#include "GameContext.hpp"
+#include <raylib.h>
 
-/* 
-   GetContext implementations.
-   These couldn't be implemented in Screen.h without including 
-   ScreenManager.h which would cause a circular dependency as 
-   ScreenManager.h already includes Screen.h.
-*/
+// Define static members
+int Screen::originalWindowWidth = 0;
+int Screen::originalWindowHeight = 0;
+
 GameContext& Screen::GetContext() {
     return manager.GetContext();
 }
 
 const GameContext& Screen::GetContext() const {
     return manager.GetContext();
+}
+
+void Screen::RestoreOriginalWindowSize() {
+    SetWindowSize(originalWindowWidth, originalWindowHeight);
 }

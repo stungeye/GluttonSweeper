@@ -10,8 +10,7 @@ MainMenuScreen::MainMenuScreen(ScreenManager& manager)
     : FullScreen{ manager }, selectedOption{ 0 } {
     
     // Restore original window size when returning to main menu
-    auto& context = GetContext();
-    SetWindowSize(context.originalWindowWidth, context.originalWindowHeight);
+    RestoreOriginalWindowSize();
 }
 
 void MainMenuScreen::Update() {

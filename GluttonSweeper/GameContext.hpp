@@ -20,15 +20,11 @@ class TextureManager;
 //   GetContext().gameManager.AddScore(10);
 struct GameContext {
     GameManager& gameManager;
-	TextureManager& textureManager;
-    int originalWindowWidth;
-    int originalWindowHeight;
+    TextureManager& textureManager;
     
-    GameContext(GameManager& gm, TextureManager& tm, int windowWidth, int windowHeight) 
+    GameContext(GameManager& gm, TextureManager& tm) 
         : gameManager{ gm }
-        , textureManager{ tm }
-        , originalWindowWidth{ windowWidth }
-        , originalWindowHeight{ windowHeight } {
+        , textureManager{ tm } {
     }
 
     // Non-copyable (and non-assignable)

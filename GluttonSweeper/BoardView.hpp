@@ -35,6 +35,8 @@ public:
     BoardView(TextureManager& textureManager,
               const std::string& unrevealedPath,
               const std::string& flaggedPath,
+              const std::string& correctFlaggedPath,
+              const std::string& incorrectFlaggedPath,
               const std::string& minePath,
               const std::string& emptyPath,
               const std::string& framePath,
@@ -76,6 +78,8 @@ private:
     // Cached tile sprite handles
     TextureManager::Handle unrevealedTile;
     TextureManager::Handle flaggedTile;
+    TextureManager::Handle correctFlaggedTile;
+    TextureManager::Handle incorrectFlaggedTile;
     TextureManager::Handle mineTile;
     TextureManager::Handle emptyTile;
     TextureManager::Handle frameTile;

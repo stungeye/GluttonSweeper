@@ -8,6 +8,8 @@ constexpr int FRAME_SLICE_SIZE = 16; // Assumed constant for 9-slice scaling, ad
 BoardView::BoardView(TextureManager& tm,
                      const std::string& unrevealedPath,
                      const std::string& flaggedPath,
+                     const std::string& correctFlaggedPath,
+                     const std::string& incorrectFlaggedPath,
                      const std::string& minePath,
                      const std::string& emptyPath,
                      const std::string& framePath,
@@ -21,6 +23,8 @@ BoardView::BoardView(TextureManager& tm,
     // Load tile textures
     unrevealedTile = textureManager.GetOrLoad(unrevealedPath);
     flaggedTile = textureManager.GetOrLoad(flaggedPath);
+    correctFlaggedTile = textureManager.GetOrLoad(correctFlaggedPath);
+    incorrectFlaggedTile = textureManager.GetOrLoad(incorrectFlaggedPath);
     mineTile = textureManager.GetOrLoad(minePath);
     emptyTile = textureManager.GetOrLoad(emptyPath);
     frameTile = textureManager.GetOrLoad(framePath);
@@ -73,6 +77,8 @@ void BoardView::Generate(const Board& board) {
     const int boardOffsetY = frameWidth;
 
     // Draw each tile based on board state
+    const bool gameOver = board.IsGameOver();
+    
     for (int y = 0; y < board.GetHeight(); ++y) {
         for (int x = 0; x < board.GetWidth(); ++x) {
             Vector2 position = { 
@@ -85,11 +91,26 @@ void BoardView::Generate(const Board& board) {
             if (!Tile::IsRevealed(tile)) {
                 // Draw unrevealed or flagged tile
                 if (Tile::IsFlagged(tile)) {
-                    if (flaggedTile && flaggedTile->isValid()) {
+                    // Draw unrevealed background
+                    if (unrevealedTile && unrevealedTile->isValid()) {
                         DrawTextureEx(unrevealedTile->raw(), position, 0.0f, 
                                      static_cast<float>(tileSize) / unrevealedTile->width(), WHITE);
-                        DrawTextureEx(flaggedTile->raw(), position, 0.0f, 
-                                     static_cast<float>(tileSize) / flaggedTile->width(), WHITE);
+                    }
+                    
+                    // Choose flag sprite based on game state and correctness
+                    TextureManager::Handle flagSprite;
+                    if (gameOver) {
+                        // Game over: show correct/incorrect flags
+                        bool isCorrect = Tile::IsMine(tile);
+                        flagSprite = isCorrect ? correctFlaggedTile : incorrectFlaggedTile;
+                    } else {
+                        // Game ongoing: show regular flag
+                        flagSprite = flaggedTile;
+                    }
+                    
+                    if (flagSprite && flagSprite->isValid()) {
+                        DrawTextureEx(flagSprite->raw(), position, 0.0f, 
+                                     static_cast<float>(tileSize) / flagSprite->width(), WHITE);
                     }
                 } else {
                     if (unrevealedTile && unrevealedTile->isValid()) {

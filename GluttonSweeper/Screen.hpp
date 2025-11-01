@@ -21,6 +21,7 @@ struct GameContext;
 //   - RequestExit() - Request that the application exit
 //   - RequestClose() - Close this screen (overlays only)
 //   - GetContext() - Access game-wide systems (GameManager, TextureManager, etc.)
+//   - RestoreOriginalWindowSize() - Restore window to original dimensions
 //
 // Example of a derived screen can be seen below in FullScreen and Overlay classes.
 class Screen {
@@ -28,6 +29,10 @@ private:
     std::unique_ptr<Screen> nextScreen;
     bool requestedExit;
     ScreenManager& manager;
+    
+    // Original window dimensions (shared across all screens)
+    static int originalWindowWidth;
+    static int originalWindowHeight;
 
 protected:
     bool requestedClose;  // Protected so Overlay can set it
@@ -35,6 +40,9 @@ protected:
     // Access to game context for derived classes (implemented in Screen.cpp)
     GameContext& GetContext();
     const GameContext& GetContext() const;
+    
+    // Restore window to original dimensions
+    void RestoreOriginalWindowSize();
 
     // Template method - automatically injects manager and hides unique_ptr from derived classes
 	// typename T                   = type of the screen to create
@@ -69,6 +77,12 @@ public:
     
     bool WantsClose() const {
         return requestedClose;
+    }
+    
+    // Initialize original window dimensions (called once at startup)
+    static void SetOriginalWindowDimensions(int width, int height) {
+        originalWindowWidth = width;
+        originalWindowHeight = height;
     }
 };
 

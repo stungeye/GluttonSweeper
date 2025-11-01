@@ -4,6 +4,7 @@
 #include "../GameContext.hpp"
 #include "../GameManager.hpp"
 #include <raylib.h>
+#include <raymath.h>
 #include <algorithm>
 
 BoardSizing BoardSizing::Calculate(int boardWidth, int boardHeight, int maxRenderWidth, int maxRenderHeight) {
@@ -46,12 +47,12 @@ GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> board
     , firstClick{ true } {
     
     // Get current monitor dimensions for proper sizing
-    int currentMonitor = GetCurrentMonitor();
-    int monitorWidth = GetMonitorWidth(currentMonitor);
-    int monitorHeight = GetMonitorHeight(currentMonitor);
+    const int currentMonitor = GetCurrentMonitor();
+    const int monitorWidth = GetMonitorWidth(currentMonitor);
+    const int monitorHeight = GetMonitorHeight(currentMonitor);
     
     // Calculate optimal board sizing based on monitor dimensions
-    BoardSizing sizing = BoardSizing::Calculate(
+    const BoardSizing sizing = BoardSizing::Calculate(
         boardSize.first,
         boardSize.second,
         monitorWidth,
@@ -62,15 +63,6 @@ GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> board
 	boardPosition.x = sizing.tileSize;
     boardPosition.y = sizing.tileSize;
     
-	// TraceLog the sizing results for debugging
-	TraceLog(LOG_INFO, "Calculated Board Sizing:");
-	TraceLog(LOG_INFO, " Tile Size: %d", sizing.tileSize);
-	TraceLog(LOG_INFO, " Window Width: %d", sizing.windowWidth);
-	TraceLog(LOG_INFO, " Window Height: %d", sizing.windowHeight);
-	// Log monitor dimensions
-	TraceLog(LOG_INFO, " Monitor Width: %d", monitorWidth);
-	TraceLog(LOG_INFO, " Monitor Height: %d", monitorHeight);
-
     // Apply window sizing
     SetWindowSize(sizing.windowWidth, sizing.windowHeight);
     
@@ -79,7 +71,9 @@ GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> board
     boardView.emplace(
         GetContext().textureManager,
         "Assets/tile_0040.png",
-        "Assets/tile_0114.png",
+		"Assets/tile_0116.png",    // Flagged tile
+        "Assets/tile_0114.png",    // Correct flag
+        "Assets/tile_0115.png",    // Incorrect flag
         "Assets/tile_0111.png",
         "Assets/tile_0000.png",
         "Assets/tileframe_9slice.png",
@@ -110,42 +104,29 @@ void GameplayScreen::Update() {
         return;
     }
 
-	// Convert screen position to board-relative position
+	// Convert screen position to board-relative position and get the tile position
 	const Vector2 mousePos = GetMousePosition();
-	const float boardX = mousePos.x - boardPosition.x;
-	const float boardY = mousePos.y - boardPosition.y;
+	const Vector2 overBoardPos = Vector2Subtract(mousePos,boardPosition);
+    const auto tilePos = boardView->GetTileAtPosition(overBoardPos.x, overBoardPos.y);
 
-    // Handle mouse input for tile interactions
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        // Get tile coordinates
-        if (const auto tilePos = boardView->GetTileAtPosition(boardX, boardY)) {
+        if (tilePos) {
             const auto [tileX, tileY] = *tilePos;
             
-            // If this is the first click, initialize the board with this position as safe
             if (firstClick) {
                 board.Initialize(std::make_pair(tileX, tileY));
                 firstClick = false;
             }
             
             if (board.RevealTile(tileX, tileY)) {
-                boardView->Generate(board);  // Regenerate view on board change
+                boardView->Generate(board);  
             }
         }
     }
 
-    // Right click to flag
-    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-        // Get tile coordinates
-        if (const auto tilePos = boardView->GetTileAtPosition(boardX, boardY)) {
+    if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !firstClick) {
+        if (tilePos) {
             const auto [tileX, tileY] = *tilePos;
-            
-            // If this is the first interaction, initialize the board first
-            // (though flagging first is unusual, we should handle it)
-            if (firstClick) {
-                board.Initialize(std::make_pair(tileX, tileY));
-                firstClick = false;
-                boardView->Generate(board);
-            }
             
             board.ToggleFlag(tileX, tileY);
             boardView->Generate(board);  // Regenerate view on board change
@@ -154,20 +135,15 @@ void GameplayScreen::Update() {
 
     // Check for game over conditions
     if (board.IsGameOver()) {
-        if (board.IsGameWon()) {
-            // Player won - could show victory screen
-        } else {
-            // Player lost - hit a mine
-            board.revealAll();
-            boardView->Generate(board);
-        }
+		board.revealAll();
+		boardView->Generate(board);
     }
 }
 
 void GameplayScreen::Draw() const {
     ClearBackground(DARKGRAY);
 
-    DrawText("Left Click: Reveal | Right Click: Flag | ESC: Menu", boardPosition.x, boardPosition.y / 2, 20, WHITE);
+    DrawText("Click: Reveal | Right Click: Flag | ESC: Menu", boardPosition.x, boardPosition.y / 4, boardPosition.y /2, WHITE);
 
     // Draw the board view
     const Texture2D texture = boardView->GetTexture();
