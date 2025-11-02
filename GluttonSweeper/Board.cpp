@@ -151,7 +151,7 @@ bool Board::ExecuteChord(int x, int y) {
     // Cancel pre-chord state before revealing
     CancelPreChord();
     
-    // Reveal all adjacent unrevealed, unflagged tiles
+    // Reveal all adjacent unrevealed, unflagged tiles using RevealTile
     bool anyRevealed = false;
     for (int dy = -1; dy <= 1; ++dy) {
         for (int dx = -1; dx <= 1; ++dx) {
@@ -161,27 +161,12 @@ bool Board::ExecuteChord(int x, int y) {
             int ny = y + dy;
             
             if (isValidPosition(nx, ny)) {
-                Tile::TileValue& neighbor = tiles[ny][nx];
-                
-                if (!Tile::IsRevealed(neighbor) && !Tile::IsFlagged(neighbor)) {
-                    neighbor = Tile::Reveal(neighbor);
+                // RevealTile handles all reveal logic, flood fill, mine detection, and win checking
+                if (RevealTile(nx, ny)) {
                     anyRevealed = true;
-                    
-                    // Check if we hit a mine
-                    if (Tile::IsMine(neighbor)) {
-                        gameOver = true;
-                    }
-                    // If empty tile, trigger flood fill
-                    else if (Tile::GetAdjacentMines(neighbor) == 0) {
-                        revealAdjacentTiles(nx, ny);
-                    }
                 }
             }
         }
-    }
-    
-    if (anyRevealed && !gameOver) {
-        checkWinCondition();
     }
     
     return anyRevealed;
