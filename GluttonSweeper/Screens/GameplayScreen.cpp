@@ -114,33 +114,88 @@ void GameplayScreen::Update() {
 	const Vector2 overBoardPos = Vector2Subtract(mousePos,boardPosition);
     const auto tilePos = boardView->GetTileAtPosition(overBoardPos.x, overBoardPos.y);
 
-    if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+    // Track button states for chording
+    static bool wasLeftDown = false;
+    static bool wasRightDown = false;
+    static bool bothWerePressed = false;
+    static std::optional<std::pair<int, int>> lastChordTile = std::nullopt;
+    
+    const bool leftDown = IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+    const bool rightDown = IsMouseButtonDown(MOUSE_RIGHT_BUTTON);
+    const bool bothDown = leftDown && rightDown;
+    
+    // Chording logic (both buttons held)
+    if (bothDown && !firstClick) {
         if (tilePos) {
-			gameManager.logLeftClick();
-
             const auto [tileX, tileY] = *tilePos;
+            auto currentTile = std::make_pair(tileX, tileY);
             
-            if (firstClick) {
-                board.Initialize(std::make_pair(tileX, tileY));
-                firstClick = false;
-            }
-            
-            if (board.RevealTile(tileX, tileY)) {
-                boardView->Generate(board);  
+            // Start pre-chord or update to new tile if mouse moved
+            if (!lastChordTile.has_value() || lastChordTile != currentTile) {
+                board.StartPreChord(tileX, tileY);
+                boardView->Generate(board);
+                lastChordTile = currentTile;
             }
         }
+        bothWerePressed = true;
     }
+    // Both buttons were pressed and now at least one is released
+    else if (bothWerePressed && (!leftDown || !rightDown)) {
+        // If both buttons are now released, execute the chord or cancel
+        if (!leftDown && !rightDown) {
+            if (lastChordTile.has_value()) {
+                const auto [chordX, chordY] = *lastChordTile;
+                board.ExecuteChord(chordX, chordY);  // ExecuteChord handles cancel internally if it fails
+                boardView->Generate(board);
+            }
+            // Always reset state when both buttons are released
+            bothWerePressed = false;
+            lastChordTile = std::nullopt;
+        }
+        // One button still held - keep pre-chord active
+    }
+    // One button released while the other was never pressed - shouldn't happen but cancel anyway
+    else if (!bothDown && lastChordTile.has_value()) {
+        board.CancelPreChord();
+        boardView->Generate(board);
+        bothWerePressed = false;
+        lastChordTile = std::nullopt;
+    }
+
+    // Regular click handling (only if not chording)
+    if (!bothWerePressed) {
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            if (tilePos) {
+                gameManager.logLeftClick();
+
+                const auto [tileX, tileY] = *tilePos;
+                
+                if (firstClick) {
+                    board.Initialize(std::make_pair(tileX, tileY));
+                    firstClick = false;
+                }
+                
+                if (board.RevealTile(tileX, tileY)) {
+                    boardView->Generate(board);  
+                }
+            }
+        }
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !firstClick) {
-        if (tilePos) {
-			gameManager.logRightClick();
+            if (tilePos) {
+                gameManager.logRightClick();
 
-            const auto [tileX, tileY] = *tilePos;
-            
-            board.ToggleFlag(tileX, tileY);
-            boardView->Generate(board);  // Regenerate view on board change
+                const auto [tileX, tileY] = *tilePos;
+                
+                board.ToggleFlag(tileX, tileY);
+                boardView->Generate(board);
+            }
         }
     }
+
+    // Update button state tracking
+    wasLeftDown = leftDown;
+    wasRightDown = rightDown;
 
     // Check for game over conditions
     if (board.IsGameOver()) {

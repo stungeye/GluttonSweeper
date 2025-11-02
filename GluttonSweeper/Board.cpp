@@ -81,6 +81,129 @@ int Board::countAdjacentMines(int x, int y) const {
     return count;
 }
 
+int Board::countAdjacentFlags(int x, int y) const {
+    int count = 0;
+    for (int dy = -1; dy <= 1; ++dy) {
+        for (int dx = -1; dx <= 1; ++dx) {
+            if (dx == 0 && dy == 0) continue;
+            
+            int nx = x + dx;
+            int ny = y + dy;
+            
+            if (isValidPosition(nx, ny) && Tile::IsFlagged(tiles[ny][nx])) {
+                ++count;
+            }
+        }
+    }
+    return count;
+}
+
+void Board::StartPreChord(int x, int y) {
+    // Cancel any existing pre-chord first (before validation)
+    CancelPreChord();
+    
+    if (!isValidPosition(x, y) || gameOver) {
+        return;
+    }
+    
+    Tile::TileValue tile = tiles[y][x];
+    
+    // Can only chord revealed tiles with adjacent mines
+    if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
+        return;
+    }
+    
+    // Pre-chord all unrevealed, unflagged adjacent tiles
+    for (int dy = -1; dy <= 1; ++dy) {
+        for (int dx = -1; dx <= 1; ++dx) {
+            if (dx == 0 && dy == 0) continue;
+            
+            int nx = x + dx;
+            int ny = y + dy;
+            
+            if (isValidPosition(nx, ny)) {
+                Tile::TileValue& neighbor = tiles[ny][nx];
+                if (!Tile::IsRevealed(neighbor) && !Tile::IsFlagged(neighbor)) {
+                    neighbor = Tile::PreChord(neighbor);
+                }
+            }
+        }
+    }
+}
+
+void Board::CancelPreChord() {
+    // Revert all pre-chorded tiles back to unrevealed
+    for (auto& row : tiles) {
+        for (Tile::TileValue& tile : row) {
+            if (Tile::IsPreChorded(tile)) {
+                tile = Tile::UnPreChord(tile);
+            }
+        }
+    }
+}
+
+bool Board::ExecuteChord(int x, int y) {
+    if (!isValidPosition(x, y) || gameOver) {
+        return false;
+    }
+    
+    Tile::TileValue tile = tiles[y][x];
+    
+    // Can only chord revealed tiles with adjacent mines
+    if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
+        CancelPreChord();
+        return false;
+    }
+    
+    // Count adjacent flags
+    int adjacentFlags = countAdjacentFlags(x, y);
+    int adjacentMines = Tile::GetAdjacentMines(tile);
+    
+    // Chord fails if flag count doesn't match mine count
+    if (adjacentFlags != adjacentMines) {
+        CancelPreChord();
+        return false;
+    }
+    
+    // Cancel pre-chord state before revealing
+    CancelPreChord();
+    
+    // Reveal all adjacent unrevealed, unflagged tiles
+    bool anyRevealed = false;
+    for (int dy = -1; dy <= 1; ++dy) {
+        for (int dx = -1; dx <= 1; ++dx) {
+            if (dx == 0 && dy == 0) continue;
+            
+            int nx = x + dx;
+            int ny = y + dy;
+            
+            if (isValidPosition(nx, ny)) {
+                Tile::TileValue& neighbor = tiles[ny][nx];
+                
+                if (!Tile::IsRevealed(neighbor) && !Tile::IsFlagged(neighbor)) {
+                    neighbor = Tile::Reveal(neighbor);
+                    anyRevealed = true;
+                    
+                    // Check if we hit a mine
+                    if (Tile::IsMine(neighbor)) {
+                        gameOver = true;
+                    }
+                    // If empty tile, trigger flood fill
+                    else if (Tile::GetAdjacentMines(neighbor) == 0) {
+                        revealAdjacentTiles(nx, ny);
+                    }
+                }
+            }
+        }
+    }
+    
+    if (anyRevealed && !gameOver) {
+        checkWinCondition();
+    }
+    
+    return anyRevealed;
+}
+
 bool Board::RevealTile(int x, int y) {
     if (!isValidPosition(x, y) || gameOver) {
         return false;

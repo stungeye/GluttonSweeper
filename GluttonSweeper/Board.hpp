@@ -34,13 +34,18 @@ public:
     bool RevealTile(int x, int y);
     void ToggleFlag(int x, int y);
     void revealAll();
+    
+    // Chording methods
+    void StartPreChord(int x, int y);
+    void CancelPreChord();
+    bool ExecuteChord(int x, int y);
 
     Tile::TileValue GetTile(int x, int y) const;
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
     int GetMineCount() const { return mineCount; }
-	int GetFlagCount() const { return flagCount; }
-	int GetRemainingMines() const { return mineCount - flagCount; }
+    int GetFlagCount() const { return flagCount; }
+    int GetRemainingMines() const { return mineCount - flagCount; }
     
     bool IsGameOver() const { return gameOver; }
     bool IsGameWon() const { return gameWon; }
@@ -51,6 +56,7 @@ private:
     void revealAdjacentTiles(int x, int y);
     bool isValidPosition(int x, int y) const;
     int countAdjacentMines(int x, int y) const;
+    int countAdjacentFlags(int x, int y) const;
     void checkWinCondition();
 
     int width;
