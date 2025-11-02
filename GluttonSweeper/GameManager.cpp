@@ -2,7 +2,7 @@
 #include "raylib.h"
 
 GameManager::GameManager()
-    : timeElapsed{ 0.0f } {
+	: timeElapsed{ 0.0f }, rightClicks{ 0 }, leftClicks{ 0 } {
 }
 
 void GameManager::Update() {
@@ -11,4 +11,6 @@ void GameManager::Update() {
 
 void GameManager::Reset() {
 	timeElapsed = 0.0f;
+	rightClicks = 0;
+	leftClicks = 0;
 }

@@ -18,11 +18,15 @@
 class GameManager {
 private:
     float timeElapsed;
+	int rightClicks;
+	int leftClicks;
 
 public:
     GameManager();
    
 	int getTimeElapsed() const { return static_cast<int>(timeElapsed); }
+	void logRightClick() { ++rightClicks; }
+	void logLeftClick() { ++leftClicks; }
     void Update();
     void Reset();
 };

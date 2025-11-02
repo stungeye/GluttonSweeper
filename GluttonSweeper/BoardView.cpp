@@ -89,22 +89,17 @@ void BoardView::Generate(const Board& board) {
             Tile::TileValue tile = board.GetTile(x, y);
 
             if (!Tile::IsRevealed(tile)) {
-                // Draw unrevealed or flagged tile
                 if (Tile::IsFlagged(tile)) {
-                    // Draw unrevealed background
                     if (unrevealedTile && unrevealedTile->isValid()) {
                         DrawTextureEx(unrevealedTile->raw(), position, 0.0f, 
                                      static_cast<float>(tileSize) / unrevealedTile->width(), WHITE);
                     }
                     
-                    // Choose flag sprite based on game state and correctness
                     TextureManager::Handle flagSprite;
                     if (gameOver) {
-                        // Game over: show correct/incorrect flags
                         bool isCorrect = Tile::IsMine(tile);
                         flagSprite = isCorrect ? correctFlaggedTile : incorrectFlaggedTile;
                     } else {
-                        // Game ongoing: show regular flag
                         flagSprite = flaggedTile;
                     }
                     
@@ -119,7 +114,6 @@ void BoardView::Generate(const Board& board) {
                     }
                 }
             } else {
-                // Draw revealed tile
                 if (Tile::IsMine(tile)) {
                     if (mineTile && mineTile->isValid()) {
                         DrawTextureEx(mineTile->raw(), position, 0.0f, 
@@ -128,18 +122,15 @@ void BoardView::Generate(const Board& board) {
                 } else {
                     int adjacentMines = Tile::GetAdjacentMines(tile);
                     
-                    // Draw empty tile background
                     if (emptyTile && emptyTile->isValid()) {
                         DrawTextureEx(emptyTile->raw(), position, 0.0f, 
                                      static_cast<float>(tileSize) / emptyTile->width(), WHITE);
                     }
                     
-                    // Draw number if there are adjacent mines
                     if (adjacentMines > 0) {
                         const char* numberText = TextFormat("%d", adjacentMines);
                         int textWidth = MeasureText(numberText, fontSize);
                         
-                        // Center the text in the tile
                         Vector2 textPos = {
                             position.x + (tileSize - textWidth) / 2.0f,
                             position.y + (tileSize - fontSize) / 2.0f

@@ -116,6 +116,8 @@ void GameplayScreen::Update() {
 
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         if (tilePos) {
+			gameManager.logLeftClick();
+
             const auto [tileX, tileY] = *tilePos;
             
             if (firstClick) {
@@ -131,6 +133,8 @@ void GameplayScreen::Update() {
 
     if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !firstClick) {
         if (tilePos) {
+			gameManager.logRightClick();
+
             const auto [tileX, tileY] = *tilePos;
             
             board.ToggleFlag(tileX, tileY);
