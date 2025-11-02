@@ -43,3 +43,7 @@ Important Tile Indices:
 0123: Rat brown.
 0124: Rat grey.
 
+# TO DO:
+
+- There are screen sizing constants that are polluting the GameplayScreen. Sizing should be pushed to the Screen class. 
+- There needs to be a SpriteSheet class for image files to be associated with named textures. Could be passed to the BoardView from the context.
