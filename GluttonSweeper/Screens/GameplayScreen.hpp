@@ -9,7 +9,8 @@
 
 class GameplayScreen : public FullScreen {
 public:
-    static constexpr int PREFERRED_TILE_SIZE = 64;
+    static constexpr int PREFERRED_TILE_SIZE = 128;
+	static constexpr int OS_TASKBAR_MENUBAR_PADDING = 50; // Pixels to leave free for OS taskbar 
     static constexpr int MIN_TILE_SIZE = 16;
 	static constexpr int WIDTH_PADDING_TILES = 4;  // Multiplier for tile size to calculate width padding
 	static constexpr int HEIGHT_PADDING_TILES = 4; // Multiplier for tile size to calculate height padding
