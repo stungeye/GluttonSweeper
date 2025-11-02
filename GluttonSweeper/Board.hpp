@@ -21,11 +21,11 @@
 //   board.Initialize();  // Random mine placement
 //   // Or ensure first click is safe:
 //   board.Initialize({5, 5});  // No mines at (5,5)
-//   
+//
 //   if (board.RevealTile(x, y)) {
 //       // Tile revealed successfully
 //   }
-//   
+//
 //   board.ToggleFlag(x, y);
 class Board {
 public:
@@ -33,13 +33,13 @@ public:
 
     void Initialize(std::optional<std::pair<int, int>> safePosition = std::nullopt);
     bool RevealTile(int x, int y);
-    void ToggleFlag(int x, int y);
+    bool ToggleFlag(int x, int y);
     void revealAll();
-    
+
     // Chording methods
     void StartPreChord(int x, int y);
     void CancelPreChord();
-    bool ExecuteChord(int x, int y);
+    void ExecuteChord(int x, int y);
 
     Tile::TileValue GetTile(int x, int y) const;
     int GetWidth() const { return width; }
@@ -47,7 +47,7 @@ public:
     int GetMineCount() const { return mineCount; }
     int GetFlagCount() const { return flagCount; }
     int GetRemainingMines() const { return mineCount - flagCount; }
-    
+
     bool IsGameOver() const { return gameOver; }
     bool IsGameWon() const { return gameWon; }
 

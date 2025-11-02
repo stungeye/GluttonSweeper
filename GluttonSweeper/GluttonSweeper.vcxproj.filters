@@ -36,9 +36,6 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files\Base Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Screens\GameplayScreen.cpp">
-      <Filter>Source Files\Screens</Filter>
-    </ClCompile>
     <ClCompile Include="Screens\LogoScreen.cpp">
       <Filter>Source Files\Screens</Filter>
     </ClCompile>
@@ -68,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="Screens\DifficulyOverlay.cpp">
       <Filter>Source Files\Overlays</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\GameplayScreen.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

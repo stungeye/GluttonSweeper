@@ -125,9 +125,9 @@ void Board::CancelPreChord() {
     }
 }
 
-bool Board::ExecuteChord(int x, int y) {
+void Board::ExecuteChord(int x, int y) {
     if (!isValidPosition(x, y) || gameOver) {
-        return false;
+        return;
     }
     
     Tile::TileValue tile = tiles[y][x];
@@ -135,7 +135,7 @@ bool Board::ExecuteChord(int x, int y) {
     // Can only chord revealed tiles with adjacent mines
     if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
         CancelPreChord();
-        return false;
+        return;
     }
     
     // Count adjacent flags
@@ -145,14 +145,13 @@ bool Board::ExecuteChord(int x, int y) {
     // Chord fails if flag count doesn't match mine count
     if (adjacentFlags != adjacentMines) {
         CancelPreChord();
-        return false;
+        return;
     }
     
     // Cancel pre-chord state before revealing
     CancelPreChord();
     
     // Reveal all adjacent unrevealed, unflagged tiles using RevealTile
-    bool anyRevealed = false;
     for (int dy = -1; dy <= 1; ++dy) {
         for (int dx = -1; dx <= 1; ++dx) {
             if (dx == 0 && dy == 0) continue;
@@ -162,14 +161,10 @@ bool Board::ExecuteChord(int x, int y) {
             
             if (isValidPosition(nx, ny)) {
                 // RevealTile handles all reveal logic, flood fill, mine detection, and win checking
-                if (RevealTile(nx, ny)) {
-                    anyRevealed = true;
-                }
+                RevealTile(nx, ny);
             }
         }
     }
-    
-    return anyRevealed;
 }
 
 bool Board::RevealTile(int x, int y) {
@@ -232,9 +227,9 @@ void Board::revealAdjacentTiles(int x, int y) {
     }
 }
 
-void Board::ToggleFlag(int x, int y) {
+bool Board::ToggleFlag(int x, int y) {
     if (!isValidPosition(x, y) || gameOver) {
-        return;
+        return false;
     }
 
     Tile::TileValue& tile = tiles[y][x];
@@ -247,7 +242,10 @@ void Board::ToggleFlag(int x, int y) {
             tile = Tile::Flag(tile);
 			flagCount++;
         }
+        return true;
     }
+    
+    return false;
 }
 
 Tile::TileValue Board::GetTile(int x, int y) const {
