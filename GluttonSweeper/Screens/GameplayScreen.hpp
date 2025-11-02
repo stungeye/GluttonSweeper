@@ -25,6 +25,10 @@ private:
     Vector2 boardPosition;
     bool firstClick;
 	GameManager& gameManager;
+    
+    // Chording state
+    bool bothWerePressed{false};
+    std::optional<std::pair<int, int>> lastChordTile;
 };
 
 // Helper struct to encapsulate board sizing calculations
