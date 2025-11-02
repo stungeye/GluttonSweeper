@@ -3,6 +3,7 @@
 #include "../Screen.hpp"
 #include "../Board.hpp"
 #include "../BoardView.hpp"
+#include "../GameManager.hpp"
 #include <utility>
 #include <optional>
 
@@ -23,6 +24,7 @@ private:
     std::optional<BoardView> boardView;  // Use optional to allow reconstruction
     Vector2 boardPosition;
     bool firstClick;
+	GameManager& gameManager;
 };
 
 // Helper struct to encapsulate board sizing calculations

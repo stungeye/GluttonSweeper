@@ -39,6 +39,8 @@ public:
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
     int GetMineCount() const { return mineCount; }
+	int GetFlagCount() const { return flagCount; }
+	int GetRemainingMines() const { return mineCount - flagCount; }
     
     bool IsGameOver() const { return gameOver; }
     bool IsGameWon() const { return gameWon; }
@@ -54,6 +56,7 @@ private:
     int width;
     int height;
     int mineCount;
+    int flagCount;
     std::vector<std::vector<Tile::TileValue>> tiles;
     bool gameOver{ false };
     bool gameWon{ false };

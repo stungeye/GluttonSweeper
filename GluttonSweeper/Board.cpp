@@ -8,6 +8,7 @@ Board::Board(int w, int h, int mines)
     : width{ w }
     , height{ h }
     , mineCount{ mines }
+	, flagCount{ 0 }
     , tiles(h, std::vector<Tile::TileValue>(w, Tile::UNREVEALED_EMPTY)) {
 }
 
@@ -21,6 +22,7 @@ void Board::Initialize(std::optional<std::pair<int, int>> safePosition) {
 
     gameOver = false;
     gameWon = false;
+	flagCount = 0;
 
     placeMines(safePosition);
     calculateAdjacentMines();
@@ -149,8 +151,10 @@ void Board::ToggleFlag(int x, int y) {
     if (!Tile::IsRevealed(tile)) {
         if (Tile::IsFlagged(tile)) {
             tile = Tile::Unflag(tile);
+			flagCount--;
         } else {
             tile = Tile::Flag(tile);
+			flagCount++;
         }
     }
 }

@@ -2,7 +2,6 @@
 #include "MainMenuScreen.hpp"
 #include "../ScreenManager.hpp"
 #include "../GameContext.hpp"
-#include "../GameManager.hpp"
 #include <raylib.h>
 #include <raymath.h>
 #include <algorithm>
@@ -44,7 +43,8 @@ BoardSizing BoardSizing::Calculate(int boardWidth, int boardHeight, int maxRende
 GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> boardSize, int numberOfMines)
     : FullScreen{ manager }
     , board{ boardSize.first, boardSize.second, numberOfMines }
-    , firstClick{ true } {
+    , firstClick{ true }
+	, gameManager{ manager.GetContext().gameManager } {
     
     // Get current monitor dimensions for proper sizing
     const int currentMonitor = GetCurrentMonitor();
@@ -84,6 +84,7 @@ GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> board
     // Initialize with empty board (no mines placed yet)
     board.Initialize(std::nullopt);
     boardView->Generate(board);
+	gameManager.Reset();
 }
 
 void GameplayScreen::Update() {
@@ -102,6 +103,10 @@ void GameplayScreen::Update() {
             boardView->Generate(board);
         }
         return;
+    }
+
+    if (!firstClick) {
+		gameManager.Update();
     }
 
 	// Convert screen position to board-relative position and get the tile position
@@ -151,6 +156,12 @@ void GameplayScreen::Draw() const {
         { 0, 0, (float)texture.width, -(float)texture.height },
         boardPosition,
         WHITE);
+
+    
+    DrawText(TextFormat("Remaining: %d | Timer: %d", board.GetRemainingMines(), gameManager.getTimeElapsed()),
+             boardPosition.x, 
+             boardPosition.y + boardView->GetTextureHeight() + boardPosition.y / 4, 
+		     boardPosition.y / 2, WHITE)  ;
 
     // Draw game state information
     if (board.IsGameOver()) {

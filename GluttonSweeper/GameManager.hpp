@@ -21,7 +21,8 @@ private:
 
 public:
     GameManager();
-
+   
+	int getTimeElapsed() const { return static_cast<int>(timeElapsed); }
     void Update();
     void Reset();
 };
