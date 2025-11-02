@@ -57,14 +57,14 @@ void Board::calculateAdjacentMines() {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             if (!Tile::IsMine(tiles[y][x])) {
-                int adjacent = countAdjacentMines(x, y);
+                int adjacent = countAdjacentTiles(x, y, Tile::IsMine);
                 tiles[y][x] = Tile::CreateUnrevealed(adjacent);
             }
         }
     }
 }
 
-int Board::countAdjacentMines(int x, int y) const {
+int Board::countAdjacentTiles(int x, int y, std::function<bool(Tile::TileValue)> predicate) const {
     int count = 0;
     for (int dy = -1; dy <= 1; ++dy) {
         for (int dx = -1; dx <= 1; ++dx) {
@@ -73,24 +73,7 @@ int Board::countAdjacentMines(int x, int y) const {
             int nx = x + dx;
             int ny = y + dy;
             
-            if (isValidPosition(nx, ny) && Tile::IsMine(tiles[ny][nx])) {
-                ++count;
-            }
-        }
-    }
-    return count;
-}
-
-int Board::countAdjacentFlags(int x, int y) const {
-    int count = 0;
-    for (int dy = -1; dy <= 1; ++dy) {
-        for (int dx = -1; dx <= 1; ++dx) {
-            if (dx == 0 && dy == 0) continue;
-            
-            int nx = x + dx;
-            int ny = y + dy;
-            
-            if (isValidPosition(nx, ny) && Tile::IsFlagged(tiles[ny][nx])) {
+            if (isValidPosition(nx, ny) && predicate(tiles[ny][nx])) {
                 ++count;
             }
         }
@@ -156,7 +139,7 @@ bool Board::ExecuteChord(int x, int y) {
     }
     
     // Count adjacent flags
-    int adjacentFlags = countAdjacentFlags(x, y);
+    int adjacentFlags = countAdjacentTiles(x, y, Tile::IsFlagged);
     int adjacentMines = Tile::GetAdjacentMines(tile);
     
     // Chord fails if flag count doesn't match mine count

@@ -3,6 +3,7 @@
 #include "Tile.hpp"
 #include <vector>
 #include <optional>
+#include <functional>
 
 // Manages the minesweeper game board.
 //
@@ -55,8 +56,7 @@ private:
     void calculateAdjacentMines();
     void revealAdjacentTiles(int x, int y);
     bool isValidPosition(int x, int y) const;
-    int countAdjacentMines(int x, int y) const;
-    int countAdjacentFlags(int x, int y) const;
+    int countAdjacentTiles(int x, int y, std::function<bool(Tile::TileValue)> predicate) const;
     void checkWinCondition();
 
     int width;
