@@ -47,7 +47,7 @@ public:
     // Chording methods
     void StartPreChord(BoardPosition pos);
     void CancelPreChord();
-    void ExecuteChord(BoardPosition pos);
+    void ExecuteChord();
 
     Tile::TileValue GetTile(BoardPosition pos) const;
     int GetWidth() const { return width; }
@@ -55,9 +55,13 @@ public:
     int GetMineCount() const { return mineCount; }
     int GetFlagCount() const { return flagCount; }
     int GetRemainingMines() const { return mineCount - flagCount; }
-
+    
     bool IsGameOver() const { return gameOver; }
     bool IsGameWon() const { return gameWon; }
+    
+    // Chording state queries
+    bool IsPreChordActive() const { return chordedTile.has_value(); }
+    std::optional<BoardPosition> GetChordedTile() const { return chordedTile; }
 
 private:
     void placeMines(std::optional<BoardPosition> safePosition);
@@ -74,4 +78,5 @@ private:
     std::vector<std::vector<Tile::TileValue>> tiles;
     bool gameOver{ false };
     bool gameWon{ false };
+    std::optional<BoardPosition> chordedTile;  // Tracks active pre-chord position
 };

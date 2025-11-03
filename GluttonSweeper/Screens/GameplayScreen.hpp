@@ -27,10 +27,6 @@ private:
     Vector2 boardPosition;
     bool firstClick;
     
-    // Chording state
-	bool bothWerePressed{ false };
-	std::optional<BoardPosition> lastChordTile;
-    
     // Input handling helpers - return true if board state changed
     bool handleLeftClick(BoardPosition pos);
     bool handleRightClick(BoardPosition pos);

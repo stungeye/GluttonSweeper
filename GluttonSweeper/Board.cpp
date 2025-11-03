@@ -23,6 +23,7 @@ void Board::Initialize(std::optional<BoardPosition> safePosition) {
     gameOver = false;
     gameWon = false;
 	flagCount = 0;
+    chordedTile = std::nullopt;
 
     placeMines(safePosition);
     calculateAdjacentMines();
@@ -95,6 +96,9 @@ void Board::StartPreChord(BoardPosition pos) {
         return;
     }
     
+    // Store the chorded tile position
+    chordedTile = pos;
+    
     // Pre-chord all unrevealed, unflagged adjacent tiles
     for (int dy = -1; dy <= 1; ++dy) {
         for (int dx = -1; dx <= 1; ++dx) {
@@ -113,6 +117,9 @@ void Board::StartPreChord(BoardPosition pos) {
 }
 
 void Board::CancelPreChord() {
+    // Clear the chorded tile position
+    chordedTile = std::nullopt;
+    
     // Revert all pre-chorded tiles back to unrevealed
     for (auto& row : tiles) {
         for (Tile::TileValue& tile : row) {
@@ -123,7 +130,17 @@ void Board::CancelPreChord() {
     }
 }
 
-void Board::ExecuteChord(BoardPosition pos) {
+void Board::ExecuteChord() {
+    if (!chordedTile.has_value()) {
+        return;  // No active chord
+    }
+    
+    // Cache the chorded tile's position before we cancle pre-chording.
+    BoardPosition pos = *chordedTile;
+
+	// Regardless of outcome, always cancel pre-chording state.
+    CancelPreChord();
+    
     if (!isValidPosition(pos) || gameOver) {
         return;
     }
@@ -132,7 +149,6 @@ void Board::ExecuteChord(BoardPosition pos) {
     
     // Can only chord revealed tiles with adjacent mines
     if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
-        CancelPreChord();
         return;
     }
     
@@ -142,12 +158,8 @@ void Board::ExecuteChord(BoardPosition pos) {
     
     // Chord fails if flag count doesn't match mine count
     if (adjacentFlags != adjacentMines) {
-        CancelPreChord();
         return;
     }
-    
-    // Cancel pre-chord state before revealing
-    CancelPreChord();
     
     // Reveal all adjacent unrevealed, unflagged tiles using RevealTile
     for (int dy = -1; dy <= 1; ++dy) {
