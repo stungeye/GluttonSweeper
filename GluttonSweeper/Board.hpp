@@ -5,6 +5,14 @@
 #include <optional>
 #include <functional>
 
+// Represents a position on the minesweeper board
+struct BoardPosition {
+    int x;
+    int y;
+    
+    bool operator==(const BoardPosition& other) const = default;
+};
+
 // Manages the minesweeper game board.
 //
 // The Board class handles:
