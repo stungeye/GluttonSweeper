@@ -102,7 +102,7 @@ GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> board
     SetWindowSize(sizing.windowWidth, sizing.windowHeight);
     
     // Create BoardView with calculated tile size and appropriate font size
-    int fontSize = sizing.tileSize - sizing.tileSize / 4;  // Font size scales with tile size
+    int fontSize = sizing.tileSize - sizing.tileSize / 3;  // Font size scales with tile size
     boardView.emplace(
         GetContext().textureManager,
         "Assets/tile_0040.png",
