@@ -11,66 +11,38 @@ BoardSizing BoardSizing::Calculate(int boardWidth, int boardHeight, int maxRende
     
 	maxRenderHeight -= GameplayScreen::OS_TASKBAR_MENUBAR_PADDING; // Leave some space for OS taskbar
 
-    TraceLog(LOG_INFO, "=== BoardSizing::Calculate ===");
-    TraceLog(LOG_INFO, "Input - Board dimensions: %dx%d tiles", boardWidth, boardHeight);
-    TraceLog(LOG_INFO, "Input - Max render area: %dx%d pixels", maxRenderWidth, maxRenderHeight);
     // Try preferred tile size first
 	const int totalTilesWidth = boardWidth + GameplayScreen::WIDTH_PADDING_TILES;
 	const int totalTilesHeight = boardHeight + GameplayScreen::HEIGHT_PADDING_TILES;
-    TraceLog(LOG_INFO, "Total tiles (including padding): %dx%d", totalTilesWidth, totalTilesHeight);
     
     const int preferredBoardWidth = totalTilesWidth * GameplayScreen::PREFERRED_TILE_SIZE;
     const int preferredBoardHeight = totalTilesHeight * GameplayScreen::PREFERRED_TILE_SIZE;
-    TraceLog(LOG_INFO, "Preferred board size (%d px tiles): %dx%d pixels", 
-             GameplayScreen::PREFERRED_TILE_SIZE, preferredBoardWidth, preferredBoardHeight);
     
     if (preferredBoardWidth <= maxRenderWidth && preferredBoardHeight <= maxRenderHeight) {
         // Board fits with preferred tile size - use it
-        TraceLog(LOG_INFO, "✓ Board FITS with preferred tile size");
         result.tileSize = GameplayScreen::PREFERRED_TILE_SIZE;
         result.windowWidth = preferredBoardWidth;
         result.windowHeight = preferredBoardHeight;
-        TraceLog(LOG_INFO, "Result - Tile size: %d px", result.tileSize);
-        TraceLog(LOG_INFO, "Result - Window size: %dx%d", result.windowWidth, result.windowHeight);
     } else {
         // Board too large - calculate tile size that fits within screen (including padding at that size)
-        TraceLog(LOG_WARNING, "✗ Board TOO LARGE for preferred tile size");
-        TraceLog(LOG_INFO, "Overflow - Width: %d px (%d over), Height: %d px (%d over)",
-                 preferredBoardWidth, preferredBoardWidth - maxRenderWidth,
-                 preferredBoardHeight, preferredBoardHeight - maxRenderHeight);
-        
         const int maxTileSizeForWidth = maxRenderWidth / totalTilesWidth;
         const int maxTileSizeForHeight = maxRenderHeight / totalTilesHeight;
-        TraceLog(LOG_INFO, "Max tile size constrained by width: %d px", maxTileSizeForWidth);
-        TraceLog(LOG_INFO, "Max tile size constrained by height: %d px", maxTileSizeForHeight);
         
         // Use the smaller of the two to ensure board fits in both dimensions
         const int calculatedTileSize = std::min(maxTileSizeForWidth, maxTileSizeForHeight);
-        TraceLog(LOG_INFO, "Calculated tile size (before rounding): %d px", calculatedTileSize);
         
         // Round down to nearest multiple of 16 for clean sprite scaling
         result.tileSize = (calculatedTileSize / 16) * 16;
-        TraceLog(LOG_INFO, "Tile size after rounding to multiple of 16: %d px", result.tileSize);
-        
         result.tileSize = std::max(result.tileSize, GameplayScreen::MIN_TILE_SIZE); // Clamp to minimum
-        if (result.tileSize == GameplayScreen::MIN_TILE_SIZE) {
-            TraceLog(LOG_WARNING, "⚠ Tile size clamped to minimum: %d px", GameplayScreen::MIN_TILE_SIZE);
-        }
         
         // Calculate window size with padding at the calculated tile size
 		result.windowWidth = result.tileSize * totalTilesWidth;
         result.windowHeight = result.tileSize * totalTilesHeight;
-        TraceLog(LOG_INFO, "Result - Tile size: %d px", result.tileSize);
-        TraceLog(LOG_INFO, "Result - Window size: %dx%d", result.windowWidth, result.windowHeight);
         
         // Calculate utilization
         const float widthUtilization = (float)result.windowWidth / maxRenderWidth * 100.0f;
         const float heightUtilization = (float)result.windowHeight / maxRenderHeight * 100.0f;
-        TraceLog(LOG_INFO, "Screen utilization - Width: %.1f%%, Height: %.1f%%", 
-                 widthUtilization, heightUtilization);
     }
-    
-    TraceLog(LOG_INFO, "=== End BoardSizing::Calculate ===");
     
     return result;
 }
@@ -174,7 +146,6 @@ void GameplayScreen::Update() {
     
     // Only regenerate board view if board state changed
     if (board.IsDirty()) {
-		TraceLog(LOG_INFO, "Regenerating board view texture due to state change");
         boardView->Generate(board);
         board.ClearDirty();
     }
@@ -235,7 +206,7 @@ void GameplayScreen::handleChording(const std::optional<BoardPosition>& tilePos,
         board.CancelPreChord();
     }
     
-    // Chording logic (both buttons held)
+    // Pre-chording requested (both buttons held)
     if (leftDown && rightDown && !firstClick) {
         if (tilePos) {
             // Start pre-chord or update to new tile if mouse moved
