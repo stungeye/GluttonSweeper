@@ -148,7 +148,7 @@ bool Board::ExecuteChord() {
     // Cache the chorded tile's position before we cancel pre-chording.
     BoardPosition pos = *chordedTile;
 
-	// Regardless of outcome, always cancel pre-chording state (this marks dirty).
+	// Regardless of outcome, always cancel pre-chording state (this may mark board as dirty).
     CancelPreChord();
     
     if (!isValidPosition(pos) || gameOver) {
@@ -168,7 +168,7 @@ bool Board::ExecuteChord() {
     
     // Chord fails if flag count doesn't match mine count
     if (adjacentFlags != adjacentMines) {
-        return false;
+		return true; // This is considered an executed chord attempt, just no tiles revealed
     }
     
     // Reveal all adjacent unrevealed, unflagged tiles using RevealTile
