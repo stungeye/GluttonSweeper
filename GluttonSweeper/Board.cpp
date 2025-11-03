@@ -24,9 +24,11 @@ void Board::Initialize(std::optional<BoardPosition> safePosition) {
     gameWon = false;
 	flagCount = 0;
     chordedTile = std::nullopt;
+    dirty = false;
 
     placeMines(safePosition);
     calculateAdjacentMines();
+    markDirty();  // Board initialized, needs rendering
 }
 
 void Board::placeMines(std::optional<BoardPosition> safePosition) {
@@ -81,19 +83,21 @@ int Board::countAdjacentTiles(BoardPosition pos, std::function<bool(Tile::TileVa
     return count;
 }
 
-bool Board::StartPreChord(BoardPosition pos) {
+void Board::StartPreChord(BoardPosition pos) {
     if (!isValidPosition(pos) || gameOver) {
-        return false;
+        return;
     }
     
     // Cancel any existing pre-chord first (before validation)
-    bool boardChanged{ CancelPreChord() };
+    if (IsPreChordActive()) {
+        CancelPreChord();
+    }
     
     Tile::TileValue tile = tiles[pos.y][pos.x];
     
     // Can only chord revealed tiles with adjacent mines
     if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
-        return boardChanged;
+        return;
     }
     
     // Store the chorded tile position
@@ -110,36 +114,30 @@ bool Board::StartPreChord(BoardPosition pos) {
                 Tile::TileValue& neighborTile = tiles[neighbor.y][neighbor.x];
                 if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile)) {
                     neighborTile = Tile::PreChord(neighborTile);
-                    boardChanged = true;
+                    markDirty();
                 }
             }
         }
     }
-    
-    return boardChanged;
 }
 
-bool Board::CancelPreChord() {
+void Board::CancelPreChord() {
     if (!IsPreChordActive()) {
-        return false;  // No active chord to cancel
+        return;  // No active chord to cancel
 	}
 
     // Clear the chorded tile position
     chordedTile = std::nullopt;
-    
-    bool boardChanged = false;
     
     // Revert all pre-chorded tiles back to unrevealed
     for (auto& row : tiles) {
         for (Tile::TileValue& tile : row) {
             if (Tile::IsPreChorded(tile)) {
                 tile = Tile::UnPreChord(tile);
-                boardChanged = true;
+                markDirty();
             }
         }
     }
-    
-    return boardChanged;
 }
 
 bool Board::ExecuteChord() {
@@ -150,18 +148,18 @@ bool Board::ExecuteChord() {
     // Cache the chorded tile's position before we cancel pre-chording.
     BoardPosition pos = *chordedTile;
 
-	// Regardless of outcome, always cancel pre-chording state (this changes board state).
-    bool boardChanged{ CancelPreChord() };
+	// Regardless of outcome, always cancel pre-chording state (this marks dirty).
+    CancelPreChord();
     
     if (!isValidPosition(pos) || gameOver) {
-        return boardChanged;
+        return false;
     }
     
     Tile::TileValue tile = tiles[pos.y][pos.x];
     
     // Can only chord revealed tiles with adjacent mines
     if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
-        return boardChanged;
+        return false;
     }
     
     // Count adjacent flags
@@ -170,7 +168,7 @@ bool Board::ExecuteChord() {
     
     // Chord fails if flag count doesn't match mine count
     if (adjacentFlags != adjacentMines) {
-        return boardChanged;
+        return false;
     }
     
     // Reveal all adjacent unrevealed, unflagged tiles using RevealTile
@@ -182,14 +180,12 @@ bool Board::ExecuteChord() {
             
             if (isValidPosition(neighbor)) {
                 // RevealTile handles all reveal logic, flood fill, mine detection, and win checking
-                if (RevealTile(neighbor)) {
-					boardChanged = true;
-                }
+                RevealTile(neighbor);
             }
         }
     }
     
-    return boardChanged;
+    return true;  // Chord executed successfully
 }
 
 bool Board::RevealTile(BoardPosition pos) {
@@ -204,6 +200,7 @@ bool Board::RevealTile(BoardPosition pos) {
     }
 
     tile = Tile::Reveal(tile);
+    markDirty();
 
     if (Tile::IsMine(tile)) {
         gameOver = true;
@@ -239,6 +236,7 @@ void Board::revealAdjacentTiles(BoardPosition pos) {
                     
                     if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile) && !Tile::IsMine(neighborTile)) {
                         neighborTile = Tile::Reveal(neighborTile);
+                        markDirty();
                         
                         // Continue flood fill only if this tile also has no adjacent mines
                         if (Tile::GetAdjacentMines(neighborTile) == 0) {
@@ -266,6 +264,7 @@ bool Board::ToggleFlag(BoardPosition pos) {
             tile = Tile::Flag(tile);
 			flagCount++;
         }
+        markDirty();
         return true;
     }
     
@@ -305,4 +304,5 @@ void Board::revealAll() {
 			tile = Tile::Reveal(tile);
         }
     }
+    markDirty();
 }

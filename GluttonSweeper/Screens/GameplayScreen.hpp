@@ -28,9 +28,9 @@ private:
     bool firstClick;
     
     // Input handling helpers - return true if board state changed
-    bool handleLeftClick(BoardPosition pos);
-    bool handleRightClick(BoardPosition pos);
-    bool handleChording(const std::optional<BoardPosition>& tilePos, bool leftDown, bool rightDown);
+    void handleLeftClick(BoardPosition pos);
+    void handleRightClick(BoardPosition pos);
+    void handleChording(const std::optional<BoardPosition>& tilePos, bool leftDown, bool rightDown);
 };
 
 // Helper struct to encapsulate board sizing calculations

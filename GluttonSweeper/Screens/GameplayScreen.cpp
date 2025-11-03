@@ -135,7 +135,6 @@ void GameplayScreen::Update() {
             // Restart game
             firstClick = true;
             board.Initialize(std::nullopt);
-            boardView->Generate(board);
         }
         return;
     }
@@ -153,39 +152,31 @@ void GameplayScreen::Update() {
     const bool rightDown{ IsMouseButtonDown(MOUSE_RIGHT_BUTTON) };
     const bool bothDown{ leftDown && rightDown };
 
-    bool boardChanged{ false };
-
     // Handle chording (pre-chord, execution, cancellation)
-    if (handleChording(tilePos, leftDown, rightDown)) {
-		TraceLog(LOG_INFO, "Board state changed due to chording");
-        boardChanged = true;
-    }
+    handleChording(tilePos, leftDown, rightDown);
     
     // Regular click handling (only if not chording)
     if (!bothDown && tilePos) {
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            if (handleLeftClick(*tilePos)) {
-                boardChanged = true;
-            }
+            handleLeftClick(*tilePos);
         }
 
 		if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !firstClick) {
-            if (handleRightClick(*tilePos)) {
-                boardChanged = true;
-            }
+            handleRightClick(*tilePos);
         }
     }
 
     // Check for game over conditions
     if (board.IsGameOver()) {
 		board.revealAll();
-		boardChanged = true;
+		gameManager.statsDebug();
     }
     
-    // Only regenerate board view if something changed
-    if (boardChanged) {
+    // Only regenerate board view if board state changed
+    if (board.IsDirty()) {
 		TraceLog(LOG_INFO, "Regenerating board view texture due to state change");
         boardView->Generate(board);
+        board.ClearDirty();
     }
 }
 
@@ -221,28 +212,27 @@ void GameplayScreen::Draw() const {
     }
 }
 
-bool GameplayScreen::handleLeftClick(BoardPosition pos) {
-    gameManager.logLeftClick();
-    
+void GameplayScreen::handleLeftClick(BoardPosition pos) {
     if (firstClick) {
         board.Initialize(pos);
         firstClick = false;
     }
     
-    return board.RevealTile(pos);
+    if (board.RevealTile(pos)) {
+        gameManager.logReveal();
+    }
 }
 
-bool GameplayScreen::handleRightClick(BoardPosition pos) {
-    gameManager.logRightClick();
-    return board.ToggleFlag(pos);
+void GameplayScreen::handleRightClick(BoardPosition pos) {
+    if (board.ToggleFlag(pos)) {
+        gameManager.logFlagToggle();
+    }
 }
 
-bool GameplayScreen::handleChording(const std::optional<BoardPosition>& tilePos, bool leftDown, bool rightDown) {
-    bool boardChanged = false;
-    
+void GameplayScreen::handleChording(const std::optional<BoardPosition>& tilePos, bool leftDown, bool rightDown) {
     // Pre-chord is active but mouse moved off the board - cancel it
     if (board.IsPreChordActive() && !tilePos) {
-        boardChanged = board.CancelPreChord();
+        board.CancelPreChord();
     }
     
     // Chording logic (both buttons held)
@@ -250,14 +240,14 @@ bool GameplayScreen::handleChording(const std::optional<BoardPosition>& tilePos,
         if (tilePos) {
             // Start pre-chord or update to new tile if mouse moved
             if (board.GetChordedTile() != tilePos) {
-                boardChanged = board.StartPreChord(*tilePos);
+                board.StartPreChord(*tilePos);
             }
         }
     }
     // Both buttons were released after chording - execute the chord
     else if (board.IsPreChordActive() && !leftDown && !rightDown) {
-        boardChanged = board.ExecuteChord();
+        if (board.ExecuteChord()) {
+            gameManager.logChord();
+        }
     }
-    
-    return boardChanged;
 }

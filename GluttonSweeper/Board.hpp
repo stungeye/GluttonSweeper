@@ -45,13 +45,17 @@ public:
     void revealAll();
 
     // Chording methods
-    bool StartPreChord(BoardPosition pos);
-    bool CancelPreChord();
+    void StartPreChord(BoardPosition pos);
+    void CancelPreChord();
     bool ExecuteChord();
 
     // Chording state queries
     bool IsPreChordActive() const { return chordedTile.has_value(); }
     std::optional<BoardPosition> GetChordedTile() const { return chordedTile; }
+    
+    // Dirty flag management
+    bool IsDirty() const { return dirty; }
+    void ClearDirty() { dirty = false; }
 
     Tile::TileValue GetTile(BoardPosition pos) const;
     int GetWidth() const { return width; }
@@ -70,6 +74,7 @@ private:
     bool isValidPosition(BoardPosition pos) const;
     int countAdjacentTiles(BoardPosition pos, std::function<bool(Tile::TileValue)> predicate) const;
     void checkWinCondition();
+    void markDirty() { dirty = true; }
 
     int width;
     int height;
@@ -79,4 +84,5 @@ private:
     bool gameOver{ false };
     bool gameWon{ false };
     std::optional<BoardPosition> chordedTile;  // Tracks active pre-chord position
+    bool dirty{ false };  // Tracks if board state has changed since last view regeneration
 };
