@@ -39,17 +39,17 @@ class Board {
 public:
     Board(int width, int height, int mineCount);
 
-    void Initialize(std::optional<std::pair<int, int>> safePosition = std::nullopt);
-    bool RevealTile(int x, int y);
-    bool ToggleFlag(int x, int y);
+    void Initialize(std::optional<BoardPosition> safePosition = std::nullopt);
+    bool RevealTile(BoardPosition pos);
+    bool ToggleFlag(BoardPosition pos);
     void revealAll();
 
     // Chording methods
-    void StartPreChord(int x, int y);
+    void StartPreChord(BoardPosition pos);
     void CancelPreChord();
-    void ExecuteChord(int x, int y);
+    void ExecuteChord(BoardPosition pos);
 
-    Tile::TileValue GetTile(int x, int y) const;
+    Tile::TileValue GetTile(BoardPosition pos) const;
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
     int GetMineCount() const { return mineCount; }
@@ -60,11 +60,11 @@ public:
     bool IsGameWon() const { return gameWon; }
 
 private:
-    void placeMines(std::optional<std::pair<int, int>> safePosition);
+    void placeMines(std::optional<BoardPosition> safePosition);
     void calculateAdjacentMines();
-    void revealAdjacentTiles(int x, int y);
-    bool isValidPosition(int x, int y) const;
-    int countAdjacentTiles(int x, int y, std::function<bool(Tile::TileValue)> predicate) const;
+    void revealAdjacentTiles(BoardPosition pos);
+    bool isValidPosition(BoardPosition pos) const;
+    int countAdjacentTiles(BoardPosition pos, std::function<bool(Tile::TileValue)> predicate) const;
     void checkWinCondition();
 
     int width;

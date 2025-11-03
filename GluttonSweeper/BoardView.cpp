@@ -86,7 +86,7 @@ void BoardView::Generate(const Board& board) {
                 static_cast<float>(boardOffsetY + y * tileSize) 
             };
 
-            Tile::TileValue tile = board.GetTile(x, y);
+            Tile::TileValue tile = board.GetTile({x, y});
 
             // Handle pre-chorded tiles (show as empty revealed)
             if (Tile::IsPreChorded(tile)) {

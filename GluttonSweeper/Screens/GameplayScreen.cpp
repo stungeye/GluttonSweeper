@@ -224,16 +224,16 @@ bool GameplayScreen::handleLeftClick(int tileX, int tileY) {
     gameManager.logLeftClick();
     
     if (firstClick) {
-        board.Initialize(std::make_pair(tileX, tileY));
+        board.Initialize(BoardPosition{tileX, tileY});
         firstClick = false;
     }
     
-    return board.RevealTile(tileX, tileY);
+    return board.RevealTile({tileX, tileY});
 }
 
 bool GameplayScreen::handleRightClick(int tileX, int tileY) {
     gameManager.logRightClick();
-    return board.ToggleFlag(tileX, tileY);
+    return board.ToggleFlag({tileX, tileY});
 }
 
 bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& tilePos, bool leftDown, bool rightDown) {
@@ -253,7 +253,7 @@ bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& ti
             // Start pre-chord or update to new tile if mouse moved
             if (!lastChordTile.has_value() || lastChordTile != tilePos) {
                 const auto [tileX, tileY] = *tilePos;
-                board.StartPreChord(tileX, tileY);
+                board.StartPreChord({tileX, tileY});
                 lastChordTile = tilePos;
                 boardChanged = true;
             }
@@ -264,7 +264,7 @@ bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& ti
     else if (bothWerePressed && !leftDown && !rightDown) {
         if (lastChordTile.has_value()) {
             const auto [chordX, chordY] = *lastChordTile;
-            board.ExecuteChord(chordX, chordY);
+            board.ExecuteChord({chordX, chordY});
             boardChanged = true;
         }
         // Reset state when both buttons are released

@@ -12,7 +12,7 @@ Board::Board(int w, int h, int mines)
     , tiles(h, std::vector<Tile::TileValue>(w, Tile::UNREVEALED_EMPTY)) {
 }
 
-void Board::Initialize(std::optional<std::pair<int, int>> safePosition) {
+void Board::Initialize(std::optional<BoardPosition> safePosition) {
     // Reset all tiles to unrevealed empty
     for (auto& row : tiles) {
         for (auto& tile : row) {
@@ -28,14 +28,14 @@ void Board::Initialize(std::optional<std::pair<int, int>> safePosition) {
     calculateAdjacentMines();
 }
 
-void Board::placeMines(std::optional<std::pair<int, int>> safePosition) {
+void Board::placeMines(std::optional<BoardPosition> safePosition) {
     // Create a list of all positions
-    std::vector<std::pair<int, int>> positions;
+    std::vector<BoardPosition> positions;
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             // Skip the safe position if provided
             if (safePosition.has_value() && 
-                safePosition->first == x && safePosition->second == y) {
+                safePosition->x == x && safePosition->y == y) {
                 continue;
             }
             positions.push_back({ x, y });
@@ -48,8 +48,8 @@ void Board::placeMines(std::optional<std::pair<int, int>> safePosition) {
     std::shuffle(positions.begin(), positions.end(), gen);
 
     for (int i = 0; i < mineCount && i < static_cast<int>(positions.size()); ++i) {
-        auto [x, y] = positions[i];
-        tiles[y][x] = Tile::UNREVEALED_MINE;
+        auto pos = positions[i];
+        tiles[pos.y][pos.x] = Tile::UNREVEALED_MINE;
     }
 }
 
@@ -57,23 +57,22 @@ void Board::calculateAdjacentMines() {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             if (!Tile::IsMine(tiles[y][x])) {
-                int adjacent = countAdjacentTiles(x, y, Tile::IsMine);
+                int adjacent = countAdjacentTiles({x, y}, Tile::IsMine);
                 tiles[y][x] = Tile::CreateUnrevealed(adjacent);
             }
         }
     }
 }
 
-int Board::countAdjacentTiles(int x, int y, std::function<bool(Tile::TileValue)> predicate) const {
+int Board::countAdjacentTiles(BoardPosition pos, std::function<bool(Tile::TileValue)> predicate) const {
     int count = 0;
     for (int dy = -1; dy <= 1; ++dy) {
         for (int dx = -1; dx <= 1; ++dx) {
             if (dx == 0 && dy == 0) continue;
             
-            int nx = x + dx;
-            int ny = y + dy;
+            BoardPosition neighbor{ pos.x + dx, pos.y + dy };
             
-            if (isValidPosition(nx, ny) && predicate(tiles[ny][nx])) {
+            if (isValidPosition(neighbor) && predicate(tiles[neighbor.y][neighbor.x])) {
                 ++count;
             }
         }
@@ -81,15 +80,15 @@ int Board::countAdjacentTiles(int x, int y, std::function<bool(Tile::TileValue)>
     return count;
 }
 
-void Board::StartPreChord(int x, int y) {
+void Board::StartPreChord(BoardPosition pos) {
     // Cancel any existing pre-chord first (before validation)
     CancelPreChord();
     
-    if (!isValidPosition(x, y) || gameOver) {
+    if (!isValidPosition(pos) || gameOver) {
         return;
     }
     
-    Tile::TileValue tile = tiles[y][x];
+    Tile::TileValue tile = tiles[pos.y][pos.x];
     
     // Can only chord revealed tiles with adjacent mines
     if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
@@ -101,13 +100,12 @@ void Board::StartPreChord(int x, int y) {
         for (int dx = -1; dx <= 1; ++dx) {
             if (dx == 0 && dy == 0) continue;
             
-            int nx = x + dx;
-            int ny = y + dy;
+            BoardPosition neighbor{ pos.x + dx, pos.y + dy };
             
-            if (isValidPosition(nx, ny)) {
-                Tile::TileValue& neighbor = tiles[ny][nx];
-                if (!Tile::IsRevealed(neighbor) && !Tile::IsFlagged(neighbor)) {
-                    neighbor = Tile::PreChord(neighbor);
+            if (isValidPosition(neighbor)) {
+                Tile::TileValue& neighborTile = tiles[neighbor.y][neighbor.x];
+                if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile)) {
+                    neighborTile = Tile::PreChord(neighborTile);
                 }
             }
         }
@@ -125,12 +123,12 @@ void Board::CancelPreChord() {
     }
 }
 
-void Board::ExecuteChord(int x, int y) {
-    if (!isValidPosition(x, y) || gameOver) {
+void Board::ExecuteChord(BoardPosition pos) {
+    if (!isValidPosition(pos) || gameOver) {
         return;
     }
     
-    Tile::TileValue tile = tiles[y][x];
+    Tile::TileValue tile = tiles[pos.y][pos.x];
     
     // Can only chord revealed tiles with adjacent mines
     if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
@@ -139,7 +137,7 @@ void Board::ExecuteChord(int x, int y) {
     }
     
     // Count adjacent flags
-    int adjacentFlags = countAdjacentTiles(x, y, Tile::IsFlagged);
+    int adjacentFlags = countAdjacentTiles(pos, Tile::IsFlagged);
     int adjacentMines = Tile::GetAdjacentMines(tile);
     
     // Chord fails if flag count doesn't match mine count
@@ -156,23 +154,22 @@ void Board::ExecuteChord(int x, int y) {
         for (int dx = -1; dx <= 1; ++dx) {
             if (dx == 0 && dy == 0) continue;
             
-            int nx = x + dx;
-            int ny = y + dy;
+            BoardPosition neighbor{ pos.x + dx, pos.y + dy };
             
-            if (isValidPosition(nx, ny)) {
+            if (isValidPosition(neighbor)) {
                 // RevealTile handles all reveal logic, flood fill, mine detection, and win checking
-                RevealTile(nx, ny);
+                RevealTile(neighbor);
             }
         }
     }
 }
 
-bool Board::RevealTile(int x, int y) {
-    if (!isValidPosition(x, y) || gameOver) {
+bool Board::RevealTile(BoardPosition pos) {
+    if (!isValidPosition(pos) || gameOver) {
         return false;
     }
 
-    Tile::TileValue& tile = tiles[y][x];
+    Tile::TileValue& tile = tiles[pos.y][pos.x];
     
     if (Tile::IsRevealed(tile) || Tile::IsFlagged(tile)) {
         return false;
@@ -187,38 +184,37 @@ bool Board::RevealTile(int x, int y) {
 
     // If tile has no adjacent mines, reveal adjacent tiles (flood fill)
     if (Tile::GetAdjacentMines(tile) == 0) {
-        revealAdjacentTiles(x, y);
+        revealAdjacentTiles(pos);
     }
 
     checkWinCondition();
     return true;
 }
 
-void Board::revealAdjacentTiles(int x, int y) {
+void Board::revealAdjacentTiles(BoardPosition pos) {
     // Use BFS to reveal all connected empty tiles
-    std::queue<std::pair<int, int>> toProcess;
-    toProcess.push({ x, y });
+    std::queue<BoardPosition> toProcess;
+    toProcess.push(pos);
 
     while (!toProcess.empty()) {
-        auto [cx, cy] = toProcess.front();
+        BoardPosition current = toProcess.front();
         toProcess.pop();
 
         for (int dy = -1; dy <= 1; ++dy) {
             for (int dx = -1; dx <= 1; ++dx) {
                 if (dx == 0 && dy == 0) continue;
 
-                int nx = cx + dx;
-                int ny = cy + dy;
+                BoardPosition neighbor{ current.x + dx, current.y + dy };
 
-                if (isValidPosition(nx, ny)) {
-                    Tile::TileValue& neighbor = tiles[ny][nx];
+                if (isValidPosition(neighbor)) {
+                    Tile::TileValue& neighborTile = tiles[neighbor.y][neighbor.x];
                     
-                    if (!Tile::IsRevealed(neighbor) && !Tile::IsFlagged(neighbor) && !Tile::IsMine(neighbor)) {
-                        neighbor = Tile::Reveal(neighbor);
+                    if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile) && !Tile::IsMine(neighborTile)) {
+                        neighborTile = Tile::Reveal(neighborTile);
                         
                         // Continue flood fill only if this tile also has no adjacent mines
-                        if (Tile::GetAdjacentMines(neighbor) == 0) {
-                            toProcess.push({ nx, ny });
+                        if (Tile::GetAdjacentMines(neighborTile) == 0) {
+                            toProcess.push(neighbor);
                         }
                     }
                 }
@@ -227,12 +223,12 @@ void Board::revealAdjacentTiles(int x, int y) {
     }
 }
 
-bool Board::ToggleFlag(int x, int y) {
-    if (!isValidPosition(x, y) || gameOver) {
+bool Board::ToggleFlag(BoardPosition pos) {
+    if (!isValidPosition(pos) || gameOver) {
         return false;
     }
 
-    Tile::TileValue& tile = tiles[y][x];
+    Tile::TileValue& tile = tiles[pos.y][pos.x];
     
     if (!Tile::IsRevealed(tile)) {
         if (Tile::IsFlagged(tile)) {
@@ -248,12 +244,12 @@ bool Board::ToggleFlag(int x, int y) {
     return false;
 }
 
-Tile::TileValue Board::GetTile(int x, int y) const {
-    return tiles[y][x];
+Tile::TileValue Board::GetTile(BoardPosition pos) const {
+    return tiles[pos.y][pos.x];
 }
 
-bool Board::isValidPosition(int x, int y) const {
-    return x >= 0 && x < width && y >= 0 && y < height;
+bool Board::isValidPosition(BoardPosition pos) const {
+    return pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height;
 }
 
 void Board::checkWinCondition() {
