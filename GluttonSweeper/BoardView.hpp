@@ -6,8 +6,9 @@
 #include <utility>
 #include <optional>
 
-// Forward declaration
+// Forward declarations
 class Board;
+struct BoardPosition;
 
 // Renders a minesweeper board to a cached RenderTexture2D.
 //
@@ -62,7 +63,7 @@ public:
 
     // Convert pixel coordinates (relative to board) to tile coordinates
     // Returns std::nullopt if position is outside board bounds
-    std::optional<std::pair<int, int>> GetTileAtPosition(float x, float y) const;
+    std::optional<BoardPosition> GetTileAtPosition(float x, float y) const;
 
 private:
     void unloadRenderTexture();

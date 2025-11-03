@@ -161,16 +161,14 @@ void GameplayScreen::Update() {
     
     // Regular click handling (only if not chording)
     if (!bothWerePressed && tilePos) {
-        const auto [tileX, tileY]{ *tilePos };
-
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            if (handleLeftClick(tileX, tileY)) {
+            if (handleLeftClick(*tilePos)) {
                 boardChanged = true;
             }
         }
 
 		if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !firstClick) {
-            if (handleRightClick(tileX, tileY)) {
+            if (handleRightClick(*tilePos)) {
                 boardChanged = true;
             }
         }
@@ -220,23 +218,23 @@ void GameplayScreen::Draw() const {
     }
 }
 
-bool GameplayScreen::handleLeftClick(int tileX, int tileY) {
+bool GameplayScreen::handleLeftClick(BoardPosition pos) {
     gameManager.logLeftClick();
     
     if (firstClick) {
-        board.Initialize(BoardPosition{tileX, tileY});
+        board.Initialize(pos);
         firstClick = false;
     }
     
-    return board.RevealTile({tileX, tileY});
+    return board.RevealTile(pos);
 }
 
-bool GameplayScreen::handleRightClick(int tileX, int tileY) {
+bool GameplayScreen::handleRightClick(BoardPosition pos) {
     gameManager.logRightClick();
-    return board.ToggleFlag({tileX, tileY});
+    return board.ToggleFlag(pos);
 }
 
-bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& tilePos, bool leftDown, bool rightDown) {
+bool GameplayScreen::handleChording(const std::optional<BoardPosition>& tilePos, bool leftDown, bool rightDown) {
     bool boardChanged = false;
     
     // Pre-chord is active but mouse moved off the tile - cancel it
@@ -252,8 +250,7 @@ bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& ti
         if (tilePos) {
             // Start pre-chord or update to new tile if mouse moved
             if (!lastChordTile.has_value() || lastChordTile != tilePos) {
-                const auto [tileX, tileY] = *tilePos;
-                board.StartPreChord({tileX, tileY});
+                board.StartPreChord(*tilePos);
                 lastChordTile = tilePos;
                 boardChanged = true;
             }
@@ -263,8 +260,7 @@ bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& ti
     // Both buttons were pressed and now both are released - execute the chord
     else if (bothWerePressed && !leftDown && !rightDown) {
         if (lastChordTile.has_value()) {
-            const auto [chordX, chordY] = *lastChordTile;
-            board.ExecuteChord({chordX, chordY});
+            board.ExecuteChord(*lastChordTile);
             boardChanged = true;
         }
         // Reset state when both buttons are released

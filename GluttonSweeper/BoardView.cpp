@@ -232,7 +232,7 @@ void BoardView::unloadRenderTexture() {
     }
 }
 
-std::optional<std::pair<int, int>> BoardView::GetTileAtPosition(float x, float y) const {
+std::optional<BoardPosition> BoardView::GetTileAtPosition(float x, float y) const {
     // Account for frame offset (one tile width/height on each side)
     const int frameOffset = tileSize;
     const float boardX = x - frameOffset;
@@ -248,7 +248,7 @@ std::optional<std::pair<int, int>> BoardView::GetTileAtPosition(float x, float y
 
     // Check if coordinates are within board bounds
     if (tileX >= 0 && tileX < boardWidth && tileY >= 0 && tileY < boardHeight) {
-        return std::make_pair(tileX, tileY);
+        return BoardPosition{tileX, tileY};
     }
 
     return std::nullopt;  // Position is outside board

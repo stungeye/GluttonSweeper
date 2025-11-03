@@ -28,13 +28,13 @@ private:
     bool firstClick;
     
     // Chording state
-	bool bothWerePressed{ false }; // TODO: Should be moved into Board. Denotes if pre-chord is active or not.
-	std::optional<std::pair<int, int>> lastChordTile; // TODO: Should be moved into Board. Denotes which tile is being pre-chorded.
+	bool bothWerePressed{ false };
+	std::optional<BoardPosition> lastChordTile;
     
     // Input handling helpers - return true if board state changed
-    bool handleLeftClick(int tileX, int tileY);
-    bool handleRightClick(int tileX, int tileY);
-    bool handleChording(const std::optional<std::pair<int, int>>& tilePos, bool leftDown, bool rightDown);
+    bool handleLeftClick(BoardPosition pos);
+    bool handleRightClick(BoardPosition pos);
+    bool handleChording(const std::optional<BoardPosition>& tilePos, bool leftDown, bool rightDown);
 };
 
 // Helper struct to encapsulate board sizing calculations
