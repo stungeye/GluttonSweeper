@@ -3,8 +3,6 @@
 #include "Tile.hpp"
 #include <raylib.h>
 
-constexpr int FRAME_SLICE_SIZE = 16; // Assumed constant for 9-slice scaling, adjust as needed
-
 BoardView::BoardView(TextureManager& tm,
                      const std::string& unrevealedPath,
                      const std::string& flaggedPath,

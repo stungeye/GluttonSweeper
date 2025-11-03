@@ -81,19 +81,19 @@ int Board::countAdjacentTiles(BoardPosition pos, std::function<bool(Tile::TileVa
     return count;
 }
 
-void Board::StartPreChord(BoardPosition pos) {
-    // Cancel any existing pre-chord first (before validation)
-    CancelPreChord();
-    
+bool Board::StartPreChord(BoardPosition pos) {
     if (!isValidPosition(pos) || gameOver) {
-        return;
+        return false;
     }
+    
+    // Cancel any existing pre-chord first (before validation)
+    bool boardChanged{ CancelPreChord() };
     
     Tile::TileValue tile = tiles[pos.y][pos.x];
     
     // Can only chord revealed tiles with adjacent mines
     if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
-        return;
+        return boardChanged;
     }
     
     // Store the chorded tile position
@@ -110,46 +110,58 @@ void Board::StartPreChord(BoardPosition pos) {
                 Tile::TileValue& neighborTile = tiles[neighbor.y][neighbor.x];
                 if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile)) {
                     neighborTile = Tile::PreChord(neighborTile);
+                    boardChanged = true;
                 }
             }
         }
     }
+    
+    return boardChanged;
 }
 
-void Board::CancelPreChord() {
+bool Board::CancelPreChord() {
+    if (!IsPreChordActive()) {
+        return false;  // No active chord to cancel
+	}
+
     // Clear the chorded tile position
     chordedTile = std::nullopt;
+    
+    bool boardChanged = false;
     
     // Revert all pre-chorded tiles back to unrevealed
     for (auto& row : tiles) {
         for (Tile::TileValue& tile : row) {
             if (Tile::IsPreChorded(tile)) {
                 tile = Tile::UnPreChord(tile);
+                boardChanged = true;
             }
         }
     }
+    
+    return boardChanged;
 }
 
-void Board::ExecuteChord() {
+bool Board::ExecuteChord() {
     if (!chordedTile.has_value()) {
-        return;  // No active chord
+        return false;  // No active chord
     }
     
-    // Cache the chorded tile's position before we cancle pre-chording.
+    // Cache the chorded tile's position before we cancel pre-chording.
     BoardPosition pos = *chordedTile;
 
-	// Regardless of outcome, always cancel pre-chording state.
-    CancelPreChord();
+	// Regardless of outcome, always cancel pre-chording state (this changes board state).
+    bool boardChanged{ CancelPreChord() };
     
     if (!isValidPosition(pos) || gameOver) {
-        return;
+        return boardChanged;
     }
     
     Tile::TileValue tile = tiles[pos.y][pos.x];
     
     // Can only chord revealed tiles with adjacent mines
     if (!Tile::IsRevealed(tile) || Tile::GetAdjacentMines(tile) == 0) {
-        return;
+        return boardChanged;
     }
     
     // Count adjacent flags
@@ -158,7 +170,7 @@ void Board::ExecuteChord() {
     
     // Chord fails if flag count doesn't match mine count
     if (adjacentFlags != adjacentMines) {
-        return;
+        return boardChanged;
     }
     
     // Reveal all adjacent unrevealed, unflagged tiles using RevealTile
@@ -170,10 +182,14 @@ void Board::ExecuteChord() {
             
             if (isValidPosition(neighbor)) {
                 // RevealTile handles all reveal logic, flood fill, mine detection, and win checking
-                RevealTile(neighbor);
+                if (RevealTile(neighbor)) {
+					boardChanged = true;
+                }
             }
         }
     }
+    
+    return boardChanged;
 }
 
 bool Board::RevealTile(BoardPosition pos) {

@@ -240,10 +240,9 @@ bool GameplayScreen::handleRightClick(BoardPosition pos) {
 bool GameplayScreen::handleChording(const std::optional<BoardPosition>& tilePos, bool leftDown, bool rightDown) {
     bool boardChanged = false;
     
-    // Pre-chord is active but mouse moved off the tile - cancel it
-    if (board.IsPreChordActive() && board.GetChordedTile() != tilePos) {
-        board.CancelPreChord();
-        boardChanged = true;
+    // Pre-chord is active but mouse moved off the board - cancel it
+    if (board.IsPreChordActive() && !tilePos) {
+        boardChanged = board.CancelPreChord();
     }
     
     // Chording logic (both buttons held)
@@ -251,15 +250,13 @@ bool GameplayScreen::handleChording(const std::optional<BoardPosition>& tilePos,
         if (tilePos) {
             // Start pre-chord or update to new tile if mouse moved
             if (board.GetChordedTile() != tilePos) {
-                board.StartPreChord(*tilePos);
-                boardChanged = true;
+                boardChanged = board.StartPreChord(*tilePos);
             }
         }
     }
     // Both buttons were released after chording - execute the chord
     else if (board.IsPreChordActive() && !leftDown && !rightDown) {
-        board.ExecuteChord();
-        boardChanged = true;
+        boardChanged = board.ExecuteChord();
     }
     
     return boardChanged;
