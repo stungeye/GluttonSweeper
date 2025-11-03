@@ -151,13 +151,11 @@ void GameplayScreen::Update() {
 
 	const bool leftDown{ IsMouseButtonDown(MOUSE_LEFT_BUTTON) };
     const bool rightDown{ IsMouseButtonDown(MOUSE_RIGHT_BUTTON) };
-    const bool bothDown{ leftDown && rightDown };
-
 
     bool boardChanged{ false };
 
     // Handle chording (pre-chord, execution, cancellation)
-    if (handleChording(tilePos, bothDown, leftDown, rightDown)) {
+    if (handleChording(tilePos, leftDown, rightDown)) {
         boardChanged = true;
     }
     
@@ -238,7 +236,7 @@ bool GameplayScreen::handleRightClick(int tileX, int tileY) {
     return board.ToggleFlag(tileX, tileY);
 }
 
-bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& tilePos, bool bothDown, bool leftDown, bool rightDown) {
+bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& tilePos, bool leftDown, bool rightDown) {
     bool boardChanged = false;
     
     // Pre-chord is active but mouse moved off the tile - cancel it
@@ -250,7 +248,7 @@ bool GameplayScreen::handleChording(const std::optional<std::pair<int, int>>& ti
     }
     
     // Chording logic (both buttons held)
-    if (bothDown && !firstClick) {
+    if (leftDown && rightDown && !firstClick) {
         if (tilePos) {
             // Start pre-chord or update to new tile if mouse moved
             if (!lastChordTile.has_value() || lastChordTile != tilePos) {

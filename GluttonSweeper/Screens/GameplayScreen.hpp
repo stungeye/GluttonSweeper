@@ -21,20 +21,20 @@ public:
     void Draw() const override;
 
 private:
+	GameManager& gameManager;
     Board board;
     std::optional<BoardView> boardView;  // Use optional to allow reconstruction
     Vector2 boardPosition;
     bool firstClick;
-	GameManager& gameManager;
     
     // Chording state
-    bool bothWerePressed{false};
-    std::optional<std::pair<int, int>> lastChordTile;
+	bool bothWerePressed{ false }; // TODO: Should be moved into Board. Denotes if pre-chord is active or not.
+	std::optional<std::pair<int, int>> lastChordTile; // TODO: Should be moved into Board. Denotes which tile is being pre-chorded.
     
     // Input handling helpers - return true if board state changed
     bool handleLeftClick(int tileX, int tileY);
     bool handleRightClick(int tileX, int tileY);
-    bool handleChording(const std::optional<std::pair<int, int>>& tilePos, bool bothDown, bool leftDown, bool rightDown);
+    bool handleChording(const std::optional<std::pair<int, int>>& tilePos, bool leftDown, bool rightDown);
 };
 
 // Helper struct to encapsulate board sizing calculations
