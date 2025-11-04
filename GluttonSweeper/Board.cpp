@@ -69,17 +69,11 @@ void Board::calculateAdjacentMines() {
 
 int Board::countAdjacentTiles(BoardPosition pos, std::function<bool(Tile::TileValue)> predicate) const {
     int count = 0;
-    for (int dy = -1; dy <= 1; ++dy) {
-        for (int dx = -1; dx <= 1; ++dx) {
-            if (dx == 0 && dy == 0) continue;
-            
-            BoardPosition neighbor{ pos.x + dx, pos.y + dy };
-            
-            if (isValidPosition(neighbor) && predicate(tiles[neighbor.y][neighbor.x])) {
-                ++count;
-            }
+    forEachNeighbour(pos, [&](BoardPosition neighbor) {
+        if (predicate(tiles[neighbor.y][neighbor.x])) {
+            ++count;
         }
-    }
+    });
     return count;
 }
 
@@ -104,21 +98,13 @@ void Board::StartPreChord(BoardPosition pos) {
     chordedTile = pos;
     
     // Pre-chord all unrevealed, unflagged adjacent tiles
-    for (int dy = -1; dy <= 1; ++dy) {
-        for (int dx = -1; dx <= 1; ++dx) {
-            if (dx == 0 && dy == 0) continue;
-            
-            BoardPosition neighbor{ pos.x + dx, pos.y + dy };
-            
-            if (isValidPosition(neighbor)) {
-                Tile::TileValue& neighborTile = tiles[neighbor.y][neighbor.x];
-                if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile)) {
-                    neighborTile = Tile::PreChord(neighborTile);
-                    markDirty();
-                }
-            }
+    forEachNeighbour(pos, [&](BoardPosition neighbor) {
+        Tile::TileValue& neighborTile = tiles[neighbor.y][neighbor.x];
+        if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile)) {
+            neighborTile = Tile::PreChord(neighborTile);
+			markDirty();
         }
-    }
+    });
 }
 
 void Board::CancelPreChord() {
@@ -126,18 +112,17 @@ void Board::CancelPreChord() {
         return;  // No active chord to cancel
 	}
 
-    // Clear the chorded tile position
-    chordedTile = std::nullopt;
-    
-    // Revert all pre-chorded tiles back to unrevealed
-    for (auto& row : tiles) {
-        for (Tile::TileValue& tile : row) {
-            if (Tile::IsPreChorded(tile)) {
-                tile = Tile::UnPreChord(tile);
-                markDirty();
-            }
+    // Revert all pre-chorded neighbors of the chorded tile
+    forEachNeighbour(*chordedTile, [&](BoardPosition neighbor) {
+        Tile::TileValue& tile = tiles[neighbor.y][neighbor.x];
+        if (Tile::IsPreChorded(tile)) {
+            tile = Tile::UnPreChord(tile);
+			markDirty();
         }
-    }
+    });
+    
+    // Clear the chorded tile position after reverting neighbors
+    chordedTile = std::nullopt;
 }
 
 bool Board::ExecuteChord() {
@@ -172,18 +157,10 @@ bool Board::ExecuteChord() {
     }
     
     // Reveal all adjacent unrevealed, unflagged tiles using RevealTile
-    for (int dy = -1; dy <= 1; ++dy) {
-        for (int dx = -1; dx <= 1; ++dx) {
-            if (dx == 0 && dy == 0) continue;
-            
-            BoardPosition neighbor{ pos.x + dx, pos.y + dy };
-            
-            if (isValidPosition(neighbor)) {
-                // RevealTile handles all reveal logic, flood fill, mine detection, and win checking
-                RevealTile(neighbor);
-            }
-        }
-    }
+    forEachNeighbour(pos, [&](BoardPosition neighbor) {
+        // RevealTile handles all reveal logic, flood fill, mine detection, and win checking
+        RevealTile(neighbor);
+    });
     
     return true;  // Chord executed successfully
 }
@@ -225,27 +202,19 @@ void Board::revealAdjacentTiles(BoardPosition pos) {
         BoardPosition current = toProcess.front();
         toProcess.pop();
 
-        for (int dy = -1; dy <= 1; ++dy) {
-            for (int dx = -1; dx <= 1; ++dx) {
-                if (dx == 0 && dy == 0) continue;
-
-                BoardPosition neighbor{ current.x + dx, current.y + dy };
-
-                if (isValidPosition(neighbor)) {
-                    Tile::TileValue& neighborTile = tiles[neighbor.y][neighbor.x];
-                    
-                    if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile) && !Tile::IsMine(neighborTile)) {
-                        neighborTile = Tile::Reveal(neighborTile);
-                        markDirty();
-                        
-                        // Continue flood fill only if this tile also has no adjacent mines
-                        if (Tile::GetAdjacentMines(neighborTile) == 0) {
-                            toProcess.push(neighbor);
-                        }
-                    }
+        forEachNeighbour(current, [&](BoardPosition neighbor) {
+            Tile::TileValue& neighborTile = tiles[neighbor.y][neighbor.x];
+            
+            if (!Tile::IsRevealed(neighborTile) && !Tile::IsFlagged(neighborTile) && !Tile::IsMine(neighborTile)) {
+                neighborTile = Tile::Reveal(neighborTile);
+                markDirty();
+                
+                // Continue flood fill only if this tile also has no adjacent mines
+                if (Tile::GetAdjacentMines(neighborTile) == 0) {
+                    toProcess.push(neighbor);
                 }
             }
-        }
+        });
     }
 }
 

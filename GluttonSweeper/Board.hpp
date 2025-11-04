@@ -75,6 +75,22 @@ private:
     int countAdjacentTiles(BoardPosition pos, std::function<bool(Tile::TileValue)> predicate) const;
     void checkWinCondition();
     void markDirty() { dirty = true; }
+    
+    // Helper to iterate over all 8 neighbors of a position
+    template <typename F>
+    void forEachNeighbour(BoardPosition pos, F&& func) const {
+        for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+                if (dx == 0 && dy == 0) continue;
+                
+                BoardPosition neighbor{ pos.x + dx, pos.y + dy };
+                
+                if (isValidPosition(neighbor)) {
+                    func(neighbor);
+                }
+            }
+        }
+    }
 
     int width;
     int height;
