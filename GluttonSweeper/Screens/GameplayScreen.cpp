@@ -66,15 +66,13 @@ GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> board
         monitorHeight
     );
 
-	// board Position centered in window
-	boardPosition.x = sizing.tileSize;
-    boardPosition.y = sizing.tileSize;
+	tileSize = sizing.tileSize;
     
     // Apply window sizing
     SetWindowSize(sizing.windowWidth, sizing.windowHeight);
     
     // Create BoardView with calculated tile size and appropriate font size
-    int fontSize = sizing.tileSize - sizing.tileSize / 3;  // Font size scales with tile size
+    int fontSize = tileSize - tileSize / 3;  // Font size scales with tile size
     boardView.emplace(
         GetContext().textureManager,
         "Assets/tile_0040.png",
@@ -84,7 +82,7 @@ GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> board
         "Assets/tile_0111.png",
         "Assets/tile_0000.png",
         "Assets/tileframe_9slice.png",
-        sizing.tileSize,
+        tileSize,
         fontSize
     );
     
@@ -117,8 +115,8 @@ void GameplayScreen::Update() {
 
 	// Convert screen position to board-relative position and get the tile position
     const Vector2 mousePos{ GetMousePosition() };
-    const Vector2 overBoardPos{ Vector2Subtract(mousePos,boardPosition) };
-	const auto tilePos{ boardView->GetTileAtPosition(overBoardPos.x, overBoardPos.y) };
+    const Vector2 overBoardPos{ mousePos.x - tileSize, mousePos.y - tileSize};
+	const auto tilePos{ boardView->GetTileFromPixelPosition(overBoardPos.x, overBoardPos.y) };
 
 	const bool leftDown{ IsMouseButtonDown(MOUSE_LEFT_BUTTON) };
     const bool rightDown{ IsMouseButtonDown(MOUSE_RIGHT_BUTTON) };
@@ -154,20 +152,20 @@ void GameplayScreen::Update() {
 void GameplayScreen::Draw() const {
     ClearBackground(DARKGRAY);
 
-    DrawText("Click: Reveal | Right Click: Flag | ESC: Menu", boardPosition.x, boardPosition.y / 4, boardPosition.y /2, WHITE);
+    DrawText("Click: Reveal | Right Click: Flag | ESC: Menu", tileSize, tileSize / 4, tileSize / 2, WHITE);
 
     // Draw the board view
     const Texture2D texture = boardView->GetTexture();
     DrawTextureRec(texture,
         { 0, 0, (float)texture.width, -(float)texture.height },
-        boardPosition,
+        {(float)tileSize, (float)tileSize},
         WHITE);
 
     
     DrawText(TextFormat("Remaining: %d | Timer: %d", board.GetRemainingMines(), gameManager.getTimeElapsed()),
-             boardPosition.x, 
-             boardPosition.y + boardView->GetTextureHeight() + boardPosition.y / 4, 
-		     boardPosition.y / 2, WHITE)  ;
+             tileSize, 
+             tileSize + boardView->GetTextureHeight() + tileSize / 4, 
+		     tileSize / 2, WHITE)  ;
 
     // Draw game state information
     if (board.IsGameOver()) {

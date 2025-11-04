@@ -63,7 +63,7 @@ public:
 
     // Convert pixel coordinates (relative to board) to tile coordinates
     // Returns std::nullopt if position is outside board bounds
-    std::optional<BoardPosition> GetTileAtPosition(float x, float y) const;
+    std::optional<BoardPosition> GetTileFromPixelPosition(float x, float y) const;
 
 private:
     void unloadRenderTexture();

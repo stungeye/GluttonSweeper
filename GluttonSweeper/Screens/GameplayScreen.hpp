@@ -24,7 +24,7 @@ private:
 	GameManager& gameManager;
     Board board;
     std::optional<BoardView> boardView;  // Use optional to allow reconstruction
-    Vector2 boardPosition;
+    int tileSize{ PREFERRED_TILE_SIZE };
     bool firstClick;
     
     // Input handling helpers - return true if board state changed

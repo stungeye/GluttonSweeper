@@ -127,6 +127,9 @@ void BoardView::Generate(const Board& board) {
                 // Draw revealed tile
                 if (Tile::IsMine(tile)) {
                     if (mineTile && mineTile->isValid()) {
+
+						DrawTextureEx(emptyTile->raw(), position, 0.0f, 
+									 static_cast<float>(tileSize) / emptyTile->width(), WHITE);
                         DrawTextureEx(mineTile->raw(), position, 0.0f, 
                                      static_cast<float>(tileSize) / mineTile->width(), WHITE);
                     }
@@ -230,7 +233,7 @@ void BoardView::unloadRenderTexture() {
     }
 }
 
-std::optional<BoardPosition> BoardView::GetTileAtPosition(float x, float y) const {
+std::optional<BoardPosition> BoardView::GetTileFromPixelPosition(float x, float y) const {
     // Account for frame offset (one tile width/height on each side)
     const int frameOffset = tileSize;
     const float boardX = x - frameOffset;
