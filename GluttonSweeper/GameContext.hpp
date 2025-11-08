@@ -1,11 +1,12 @@
 #pragma once
 
+#include "ResourceManager.hpp"
+
 class GameManager;
-class TextureManager;
 
 // Context holds references to all game-wide systems.
 // Currently only GameManager and TextureManager, but could hold 
-// more in the future. (AudioManger, ParticleManager, etc.)
+// more in the future. (SoundManager, FontManager, etc.)
 //
 // Screens can access the context via their GetContext().
 // This avoids the need to pass multiple references around.

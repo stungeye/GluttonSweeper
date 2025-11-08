@@ -1,7 +1,7 @@
 #include "ScreenManager.hpp"
 #include "GameManager.hpp"
 #include "GameContext.hpp"
-#include "TextureManager.hpp"
+#include "ResourceManager.hpp"
 #include "Screen.hpp"
 #include "Screens/LogoScreen.hpp"
 #include <raylib.h>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TextureManager.hpp"
+#include "ResourceManager.hpp"
 #include <raylib.h>
 #include <string>
 #include <utility>

@@ -77,16 +77,10 @@
     <ClInclude Include="GameManager.hpp">
       <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
-    <ClInclude Include="ManagedTexture.hpp">
-      <Filter>Header Files\Base Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Screen.hpp">
       <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="ScreenManager.hpp">
-      <Filter>Header Files\Base Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.hpp">
       <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="Screens\GameplayScreen.hpp">
@@ -115,6 +109,12 @@
     </ClInclude>
     <ClInclude Include="Screens\DifficultyOverlay.hpp">
       <Filter>Header Files\Overlays</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagedResource.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

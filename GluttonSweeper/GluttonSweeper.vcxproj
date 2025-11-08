@@ -145,7 +145,8 @@
     <ClInclude Include="BoardView.hpp" />
     <ClInclude Include="GameContext.hpp" />
     <ClInclude Include="GameManager.hpp" />
-    <ClInclude Include="ManagedTexture.hpp" />
+    <ClInclude Include="ManagedResource.hpp" />
+    <ClInclude Include="ResourceManager.hpp" />
     <ClInclude Include="Screen.hpp" />
     <ClInclude Include="ScreenManager.hpp" />
     <ClInclude Include="Screens\DifficultyOverlay.hpp" />
@@ -154,7 +155,6 @@
     <ClInclude Include="Screens\MainMenuScreen.hpp" />
     <ClInclude Include="Screens\OptionsOverlay.hpp" />
     <ClInclude Include="Screens\PauseOverlay.hpp" />
-    <ClInclude Include="TextureManager.hpp" />
     <ClInclude Include="Tile.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
