@@ -22,9 +22,10 @@ int main()
 		// Create game systems
 		GameManager gameManager;
 		TextureManager textureManager;
+		SoundManager soundManager;
 
 		// Create context holding all game systems
-		GameContext context{ gameManager, textureManager };
+		GameContext context{ gameManager, textureManager, soundManager };
 
 		// Create screen manager with context
 		ScreenManager screenManager{ context };

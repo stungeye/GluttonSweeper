@@ -22,11 +22,10 @@ class GameManager;
 struct GameContext {
     GameManager& gameManager;
     TextureManager& textureManager;
+	SoundManager& soundManager;
     
-    GameContext(GameManager& gm, TextureManager& tm) 
-        : gameManager{ gm }
-        , textureManager{ tm } {
-    }
+    GameContext(GameManager& gm, TextureManager& tm, SoundManager& sm) 
+		: gameManager{ gm }, textureManager{ tm }, soundManager{ sm } { }
 
     // Non-copyable (and non-assignable)
     GameContext(const GameContext&) = delete;
