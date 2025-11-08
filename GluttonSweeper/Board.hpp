@@ -66,6 +66,7 @@ public:
     
     bool IsGameOver() const { return gameOver; }
     bool IsGameWon() const { return gameWon; }
+    bool AreMinesPlaced() const { return minesPlaced; }
 
 private:
     void placeMines(std::optional<BoardPosition> safePosition);
@@ -99,6 +100,7 @@ private:
     std::vector<std::vector<Tile::TileValue>> tiles;
     bool gameOver{ false };
     bool gameWon{ false };
+    bool minesPlaced{ false };  // Tracks if Initialize() has been called
     std::optional<BoardPosition> chordedTile;  // Tracks active pre-chord position
     bool dirty{ false };  // Tracks if board state has changed since last view regeneration
 };

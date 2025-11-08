@@ -23,11 +23,10 @@ public:
 private:
 	GameManager& gameManager;
     Board board;
-    std::optional<BoardView> boardView;  // Use optional to allow reconstruction
-    int tileSize{ PREFERRED_TILE_SIZE };
-    bool firstClick;
+    std::optional<BoardView> boardView;
+    int tileSize;
     
-    // Input handling helpers - return true if board state changed
+    // Input handling helpers
     void handleLeftClick(BoardPosition pos);
     void handleRightClick(BoardPosition pos);
     void handleChording(const std::optional<BoardPosition>& tilePos, bool leftDown, bool rightDown);

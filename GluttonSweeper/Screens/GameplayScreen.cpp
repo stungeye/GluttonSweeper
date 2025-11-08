@@ -50,7 +50,6 @@ BoardSizing BoardSizing::Calculate(int boardWidth, int boardHeight, int maxRende
 GameplayScreen::GameplayScreen(ScreenManager& manager, std::pair<int, int> boardSize, int numberOfMines)
     : FullScreen{ manager }
     , board{ boardSize.first, boardSize.second, numberOfMines }
-    , firstClick{ true }
 	, gameManager{ manager.GetContext().gameManager } {
     
     // Get current monitor dimensions for proper sizing
@@ -103,13 +102,13 @@ void GameplayScreen::Update() {
     if (board.IsGameOver()) {
         if (IsKeyPressed(KEY_SPACE)) {
             // Restart game
-            firstClick = true;
             board.Initialize(std::nullopt);
         }
         return;
     }
 
-    if (!firstClick) {
+    // Timer only runs after mines are placed (first click made)
+    if (board.AreMinesPlaced()) {
 		gameManager.Update();
     }
 
@@ -131,7 +130,7 @@ void GameplayScreen::Update() {
             handleLeftClick(*tilePos);
         }
 
-		if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && !firstClick) {
+		if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON) && board.AreMinesPlaced()) {
             handleRightClick(*tilePos);
         }
     }
@@ -182,9 +181,8 @@ void GameplayScreen::Draw() const {
 }
 
 void GameplayScreen::handleLeftClick(BoardPosition pos) {
-    if (firstClick) {
+    if (!board.AreMinesPlaced()) {
         board.Initialize(pos);
-        firstClick = false;
     }
     
     if (board.RevealTile(pos)) {
@@ -204,8 +202,8 @@ void GameplayScreen::handleChording(const std::optional<BoardPosition>& tilePos,
         board.CancelPreChord();
     }
     
-    // Pre-chording requested (both buttons held)
-    if (leftDown && rightDown && !firstClick) {
+    // Pre-chording requested (both buttons held) - only after first click
+    if (leftDown && rightDown && board.AreMinesPlaced()) {
         if (tilePos) {
             // Start pre-chord or update to new tile if mouse moved
             if (board.GetChordedTile() != tilePos) {

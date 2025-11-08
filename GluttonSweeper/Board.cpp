@@ -28,6 +28,9 @@ void Board::Initialize(std::optional<BoardPosition> safePosition) {
 
     placeMines(safePosition);
     calculateAdjacentMines();
+    
+    minesPlaced = true;  // Mines are now placed on the board
+    
     markDirty();  // Board initialized, needs rendering
 }
 
