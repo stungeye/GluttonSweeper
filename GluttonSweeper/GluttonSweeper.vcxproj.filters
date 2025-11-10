@@ -66,14 +66,14 @@
     <ClCompile Include="Screens\DifficulyOverlay.cpp">
       <Filter>Source Files\Overlays</Filter>
     </ClCompile>
-    <ClCompile Include="Screens\GameplayScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DisplayService.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Screens\GameplayScreen.cpp">
+      <Filter>Source Files\Screens</Filter>
     </ClCompile>
     <ClCompile Include="TileLayout.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Base Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,17 +116,17 @@
     <ClInclude Include="Screens\DifficultyOverlay.hpp">
       <Filter>Header Files\Overlays</Filter>
     </ClInclude>
-    <ClInclude Include="ManagedResource.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TileLayout.hpp">
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Base Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagedResource.hpp">
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="DisplayService.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TileLayout.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Base Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
