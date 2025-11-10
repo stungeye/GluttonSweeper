@@ -24,13 +24,10 @@ void Board::Initialize(std::optional<BoardPosition> safePosition) {
     gameWon = false;
 	flagCount = 0;
     chordedTile = std::nullopt;
-    dirty = false;
 
     placeMines(safePosition);
     calculateAdjacentMines();
-    
-    minesPlaced = true;  // Mines are now placed on the board
-    
+    minesPlaced = true;
     markDirty();  // Board initialized, needs rendering
 }
 

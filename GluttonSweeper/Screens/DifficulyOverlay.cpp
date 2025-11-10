@@ -1,6 +1,7 @@
 #include "DifficultyOverlay.hpp"
 #include "GameplayScreen.hpp"
 #include "../ScreenManager.hpp"
+#include "../TileLayout.hpp"
 #include <raylib.h>
 
 DifficultyOverlay::DifficultyOverlay(ScreenManager& manager)
@@ -25,13 +26,13 @@ void DifficultyOverlay::Update() {
     if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
         switch (selectedOption) {
         case 0:  // Easy
-			RequestScreenChange<GameplayScreen>(std::make_pair(9,9), 10);
+            RequestScreenChange<GameplayScreen>(TileGrid{ 9,9 }, 10);
             break;
         case 1:  // Medium
-			RequestScreenChange<GameplayScreen>(std::make_pair(16, 16), 40);
+            RequestScreenChange<GameplayScreen>(TileGrid{ 16, 16 }, 40);
             break;
         case 2:  // Hard
-			RequestScreenChange<GameplayScreen>(std::make_pair(30, 16), 99);
+            RequestScreenChange<GameplayScreen>(TileGrid{ 30, 16 }, 99);
             break;
         }
     }

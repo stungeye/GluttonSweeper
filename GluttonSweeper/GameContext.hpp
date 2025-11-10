@@ -3,10 +3,10 @@
 #include "ResourceManager.hpp"
 
 class GameManager;
+class DisplayService;
 
 // Context holds references to all game-wide systems.
-// Currently only GameManager and TextureManager, but could hold 
-// more in the future. (SoundManager, FontManager, etc.)
+// Currently GameManager, TextureManager, and DisplayService.
 //
 // Screens can access the context via their GetContext().
 // This avoids the need to pass multiple references around.
@@ -22,10 +22,13 @@ class GameManager;
 struct GameContext {
     GameManager& gameManager;
     TextureManager& textureManager;
-	SoundManager& soundManager;
+    DisplayService& displayService;
     
-    GameContext(GameManager& gm, TextureManager& tm, SoundManager& sm) 
-		: gameManager{ gm }, textureManager{ tm }, soundManager{ sm } { }
+    GameContext(GameManager& gm, TextureManager& tm, DisplayService& ds) 
+        : gameManager{ gm }
+        , textureManager{ tm }
+        , displayService{ ds } {
+    }
 
     // Non-copyable (and non-assignable)
     GameContext(const GameContext&) = delete;

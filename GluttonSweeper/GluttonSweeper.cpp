@@ -2,6 +2,7 @@
 #include "GameManager.hpp"
 #include "GameContext.hpp"
 #include "ResourceManager.hpp"
+#include "DisplayService.hpp"
 #include "Screen.hpp"
 #include "Screens/LogoScreen.hpp"
 #include <raylib.h>
@@ -18,14 +19,14 @@ int main()
     // Store original window dimensions in Screen base class
     Screen::SetOriginalWindowDimensions(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	{ // Extra block scope so that TextureManager is destroyed before CloseWindow()
+	{ // Extra block scope so that managers are destroyed before CloseWindow()
 		// Create game systems
 		GameManager gameManager;
 		TextureManager textureManager;
-		SoundManager soundManager;
+		DisplayService displayService;
 
 		// Create context holding all game systems
-		GameContext context{ gameManager, textureManager, soundManager };
+		GameContext context{ gameManager, textureManager, displayService };
 
 		// Create screen manager with context
 		ScreenManager screenManager{ context };
@@ -42,7 +43,7 @@ int main()
 			screenManager.Draw();
 			EndDrawing();
 		}
-	} // All three manager objects go out of scope and are destroyed here.
+	} // All manager objects go out of scope and are destroyed here.
 
     // Cleanup
     CloseWindow();

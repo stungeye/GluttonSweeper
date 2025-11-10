@@ -45,5 +45,9 @@ Important Tile Indices:
 
 # TO DO:
 
-- There are screen sizing constants that are polluting the GameplayScreen. Sizing should be pushed to the Screen class. 
+- Screen sizing stuff has been moved to TileLayout, but I'm still not totally statisfied with how it's organized. Needs more thought.
 - There needs to be a SpriteSheet class for image files to be associated with named textures. Could be passed to the BoardView from the context.
+
+# TO DONE:
+
+- There are screen sizing constants that are polluting the GameplayScreen. Sizing should be pushed to the Screen class. 

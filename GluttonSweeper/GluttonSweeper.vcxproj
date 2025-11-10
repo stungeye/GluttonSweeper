@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="BoardView.cpp" />
+    <ClCompile Include="DisplayService.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GluttonSweeper.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -139,10 +140,12 @@
     <ClCompile Include="Screens\MainMenuScreen.cpp" />
     <ClCompile Include="Screens\OptionsOverlay.cpp" />
     <ClCompile Include="Screens\PauseOverlay.cpp" />
+    <ClCompile Include="TileLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="BoardView.hpp" />
+    <ClInclude Include="DisplayService.hpp" />
     <ClInclude Include="GameContext.hpp" />
     <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="ManagedResource.hpp" />
@@ -156,6 +159,7 @@
     <ClInclude Include="Screens\OptionsOverlay.hpp" />
     <ClInclude Include="Screens\PauseOverlay.hpp" />
     <ClInclude Include="Tile.hpp" />
+    <ClInclude Include="TileLayout.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
