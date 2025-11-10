@@ -96,11 +96,11 @@ private:
     int width;
     int height;
     int mineCount;
-    int flagCount;
     std::vector<std::vector<Tile::TileValue>> tiles;
+    int flagCount{ 0 };
     bool gameOver{ false };
     bool gameWon{ false };
     bool minesPlaced{ false };  // Tracks if Initialize() has been called
-    std::optional<BoardPosition> chordedTile;  // Tracks active pre-chord position
+    std::optional<BoardPosition> chordedTile{ std::nullopt };  // Tracks active pre-chord position
     bool dirty{ false };  // Tracks if board state has changed since last view regeneration
 };

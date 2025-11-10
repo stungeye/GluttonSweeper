@@ -8,7 +8,6 @@ Board::Board(int w, int h, int mines)
     : width{ w }
     , height{ h }
     , mineCount{ mines }
-	, flagCount{ 0 }
     , tiles(h, std::vector<Tile::TileValue>(w, Tile::UNREVEALED_EMPTY)) {
 }
 

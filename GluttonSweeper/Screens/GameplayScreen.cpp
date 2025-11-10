@@ -24,7 +24,7 @@ GameplayScreen::GameplayScreen(ScreenManager& manager, TileGrid boardSize, int n
     layout = TileLayout::Calculate(
         TileGrid{ boardSize.cols + 2, boardSize.rows + 2 },  
         viewport,
-        {1, 1, 1, 1}, // Padding in tiles. 1 on each side.
+        {1, 1, 1, 1}, // Padding in tiles outside of the BoardView. 1 on each side.
 		TileLayout::DefaultMargins(),
         constraints
     );
